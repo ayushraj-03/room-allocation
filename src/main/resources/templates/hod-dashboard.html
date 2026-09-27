@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>HOD Portal | St. Xavier's College (Autonomous), Mumbai</title>
+    <link rel="icon" type="image/png" th:href="@{/images/xavier-logo.png}">
+    <link rel="stylesheet" th:href="@{/css/xavier-theme.css}">
+</head>
+<body>
+
+<!-- Top Institutional Strip -->
+<div class="xavier-top-strip">
+    <div>
+        <a href="https://xaviers.edu" target="_blank">xaviers.edu</a>
+        <a href="#">NIRF</a>
+        <a href="#">IQAC</a>
+    </div>
+    <div style="font-weight: 600; letter-spacing: 0.04em;">
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+    </div>
+</div>
+
+<!-- Header -->
+<header class="xavier-header">
+    <div class="xavier-header-inner">
+        <div class="xavier-brand">
+            <img th:src="@{/images/xavier-logo.png}" alt="St. Xavier's College Crest" class="xavier-crest-emblem">
+            <div class="xavier-title-group">
+                <h1>ST. XAVIER'S COLLEGE, MUMBAI <span class="xavier-role-badge-tag">HOD PORTAL</span></h1>
+                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+            </div>
+        </div>
+
+        <!-- Role Switcher & User Controls -->
+        <div class="xavier-switch-menu">
+            <div class="role-switch-dropdown">
+                <button type="button" class="btn-switch-portal">
+                    <span>⇄ Switch Portal</span>
+                    <span class="chevron-icon">▾</span>
+                </button>
+                <div class="role-dropdown-content">
+                    <div class="role-dropdown-header">St. Xavier's Portals</div>
+                    <a th:href="@{/switch-role(role='STUDENT')}" class="role-dropdown-item">
+                        <div class="item-icon icon-student">🎓</div>
+                        <div class="item-text">
+                            <span class="item-title">Student Portal</span>
+                            <span class="item-email">student@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a th:href="@{/switch-role(role='HOD')}" class="role-dropdown-item" style="background-color: #fcf8f2;">
+                        <div class="item-icon icon-hod">🧑‍🏫</div>
+                        <div class="item-text">
+                            <span class="item-title" style="color: var(--xavier-maroon);">Faculty / HOD Portal</span>
+                            <span class="item-email">hod@test.com (Current)</span>
+                        </div>
+                        <span class="item-arrow" style="color: var(--xavier-maroon);">✓</span>
+                    </a>
+                    <a th:href="@{/switch-role(role='ADMIN')}" class="role-dropdown-item">
+                        <div class="item-icon icon-admin">🔑</div>
+                        <div class="item-text">
+                            <span class="item-title">Central Admin Console</span>
+                            <span class="item-email">admin@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="xavier-user-badge">
+                <div class="user-text-info">
+                    <div class="user-name-label" th:text="${hod.name}">HOD Name</div>
+                    <div class="user-dept-label" th:text="${hod.department}">Department</div>
+                </div>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit" class="btn-header-logout">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="xavier-container">
+    <!-- Page Hero -->
+    <div class="xavier-page-hero">
+        <div>
+            <h2 class="xavier-page-title">Department Review & Recommendations</h2>
+            <p class="xavier-page-desc" th:text="'Reviewing student venue reservation requests for the Department of ' + ${hod.department}"></p>
+        </div>
+        <a th:href="@{/hod/dashboard}" class="btn-xavier-outline">
+            Refresh Queue
+        </a>
+    </div>
+
+    <!-- Alert Notifications -->
+    <div th:if="${param.success != null and param.success[0] == 'approved'}" class="xavier-alert xavier-alert-success">
+        ✓ Request approved. It has been recommended and forwarded to the Central Admin office for final confirmation.
+    </div>
+    <div th:if="${param.success != null and param.success[0] == 'rejected'}" class="xavier-alert xavier-alert-danger">
+        ✕ Request has been declined.
+    </div>
+    <div th:if="${param.error != null and param.error[0] == 'unauthorized'}" class="xavier-alert xavier-alert-danger">
+        ⚠️ Unauthorized action: This request belongs to a different academic department.
+    </div>
+
+    <!-- Stats Summary Cards -->
+    <div class="stats-grid stats-grid-3">
+        <div class="stat-card maroon">
+            <div class="stat-label">Academic Department</div>
+            <div>
+                <div class="stat-value-text" th:text="${hod.department}">Computer Science</div>
+                <div class="stat-subtext">Department Review Desk</div>
+            </div>
+        </div>
+        <div class="stat-card gold">
+            <div class="stat-label">Pending Reviews</div>
+            <div>
+                <div class="stat-value" th:text="${pendingBookings != null ? pendingBookings.size() : 0}">0</div>
+                <div class="stat-subtext">Awaiting HOD endorsement</div>
+            </div>
+        </div>
+        <div class="stat-card blue">
+            <div class="stat-label">Approval Pipeline</div>
+            <div>
+                <div class="stat-value-text">Central Admin Clearance</div>
+                <div class="stat-subtext">Forwards for room key release</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Table Card -->
+    <div class="xavier-card">
+        <div class="xavier-card-header">
+            <h3 class="xavier-card-title">Pending Department Requests</h3>
+            <span class="status-pill status-pending" th:text="${pendingBookings.size()} + ' AWAITING'">0 AWAITING</span>
+        </div>
+
+        <div th:if="${pendingBookings.isEmpty()}" class="empty-state">
+            <p>There are currently no pending reservation requests for your department.</p>
+        </div>
+
+        <div th:if="${!pendingBookings.isEmpty()}" class="table-responsive">
+            <table class="xavier-table">
+                <thead>
+                <tr>
+                    <th>Requested Venue</th>
+                    <th>Student Name</th>
+                    <th>Date</th>
+                    <th>Time Slot</th>
+                    <th>Purpose / Event Details</th>
+                    <th style="text-align: right;">Department Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="booking : ${pendingBookings}">
+                    <td>
+                        <div style="font-weight: 600;" th:text="${booking.room.name}">Room Name</div>
+                        <div style="font-size: 0.76rem; color: var(--text-muted);" th:text="${booking.room.building} + ' (Capacity: ' + ${booking.room.capacity} + ')'">Building</div>
+                    </td>
+                    <td>
+                        <div style="font-weight: 600;" th:text="${booking.requestedBy.name}">Student Name</div>
+                        <div style="font-size: 0.76rem; color: var(--text-muted);" th:text="${booking.requestedBy.email}">email</div>
+                    </td>
+                    <td style="font-weight: 600;" th:text="${booking.date}">2026-09-10</td>
+                    <td>
+                        <span class="status-pill status-pending" th:text="${booking.startTime} + ' - ' + ${booking.endTime}">09:00 - 10:30</span>
+                    </td>
+                    <td style="max-width: 260px; font-size: 0.84rem;" th:text="${booking.purpose}">Purpose details</td>
+                    <td style="text-align: right; white-space: nowrap;">
+                        <form th:action="@{/hod/bookings/{id}/approve(id=${booking.id})}" method="post" style="display: inline-block; margin-right: 4px;">
+                            <button type="submit" class="btn-xavier-approve">✓ Recommend</button>
+                        </form>
+                        <form th:action="@{/hod/bookings/{id}/reject(id=${booking.id})}" method="post" style="display: inline-block;">
+                            <button type="submit" class="btn-xavier-reject">✕ Decline</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

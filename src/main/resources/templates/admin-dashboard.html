@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Central Administration | St. Xavier's College (Autonomous), Mumbai</title>
+    <link rel="icon" type="image/png" th:href="@{/images/xavier-logo.png}">
+    <link rel="stylesheet" th:href="@{/css/xavier-theme.css}">
+    <style>
+        .admin-layout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 990px) {
+            .admin-layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .btn-action-sm {
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.76rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.15s;
+        }
+        .btn-edit-sm {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #1d4ed8;
+        }
+        .btn-edit-sm:hover {
+            background: #2563eb;
+            color: #fff;
+        }
+        .btn-delete-sm {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #b91c1c;
+        }
+        .btn-delete-sm:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+        .edit-overlay-section {
+            background: #fdfbf7;
+            border: 1px solid var(--xavier-gold);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Institutional Strip -->
+<div class="xavier-top-strip">
+    <div>
+        <a href="https://xaviers.edu" target="_blank">xaviers.edu</a>
+        <a href="#">NIRF</a>
+        <a href="#">IQAC</a>
+    </div>
+    <div style="font-weight: 600; letter-spacing: 0.04em;">
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+    </div>
+</div>
+
+<!-- Header -->
+<header class="xavier-header">
+    <div class="xavier-header-inner">
+        <div class="xavier-brand">
+            <img th:src="@{/images/xavier-logo.png}" alt="St. Xavier's College Crest" class="xavier-crest-emblem">
+            <div class="xavier-title-group">
+                <h1>ST. XAVIER'S COLLEGE, MUMBAI <span class="xavier-role-badge-tag">ADMIN CONSOLE</span></h1>
+                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+            </div>
+        </div>
+
+        <!-- Role Switcher & User Controls -->
+        <div class="xavier-switch-menu">
+            <div class="role-switch-dropdown">
+                <button type="button" class="btn-switch-portal">
+                    <span>⇄ Switch Portal</span>
+                    <span class="chevron-icon">▾</span>
+                </button>
+                <div class="role-dropdown-content">
+                    <div class="role-dropdown-header">St. Xavier's Portals</div>
+                    <a th:href="@{/switch-role(role='STUDENT')}" class="role-dropdown-item">
+                        <div class="item-icon icon-student">🎓</div>
+                        <div class="item-text">
+                            <span class="item-title">Student Portal</span>
+                            <span class="item-email">student@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a th:href="@{/switch-role(role='HOD')}" class="role-dropdown-item">
+                        <div class="item-icon icon-hod">🧑‍🏫</div>
+                        <div class="item-text">
+                            <span class="item-title">Faculty / HOD Portal</span>
+                            <span class="item-email">hod@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a th:href="@{/switch-role(role='ADMIN')}" class="role-dropdown-item" style="background-color: #fcf8f2;">
+                        <div class="item-icon icon-admin">🔑</div>
+                        <div class="item-text">
+                            <span class="item-title" style="color: var(--xavier-maroon);">Central Admin Console</span>
+                            <span class="item-email">admin@test.com (Current)</span>
+                        </div>
+                        <span class="item-arrow" style="color: var(--xavier-maroon);">✓</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="xavier-user-badge">
+                <div class="user-text-info">
+                    <div class="user-name-label">Administrator</div>
+                    <div class="user-dept-label">Central Office</div>
+                </div>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit" class="btn-header-logout">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="xavier-container">
+    <!-- Page Hero -->
+    <div class="xavier-page-hero">
+        <div>
+            <h2 class="xavier-page-title">Master Allocation & Venue Control</h2>
+            <p class="xavier-page-desc">Finalize departmental booking recommendations and manage campus lecture halls, classrooms, and laboratories.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="/schedule" class="btn-xavier-outline">
+                View Schedule
+            </a>
+            <a th:href="@{/admin/dashboard}" class="btn-xavier-outline">
+                Refresh Console
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert Notifications -->
+    <div th:if="${param.error}" class="xavier-alert xavier-alert-danger">
+        <span th:if="${param.error[0] == 'conflict'}">⚠️ Allocation Conflict: Another reservation has already been confirmed for that venue and time.</span>
+        <span th:if="${param.error[0] == 'delete_failed'}">⚠️ Cannot Remove Venue: Active bookings are assigned to this room. Reassign or clear bookings first.</span>
+        <span th:if="${param.error[0] != 'conflict' and param.error[0] != 'delete_failed'}">⚠️ An unexpected error occurred. Please verify inputs.</span>
+    </div>
+
+    <div th:if="${param.success}" class="xavier-alert xavier-alert-success">
+        <span th:if="${param.success[0] == 'approved'}">✓ Reservation finalized and confirmed. Official room key authorization issued.</span>
+        <span th:if="${param.success[0] == 'rejected'}">✓ Reservation request declined.</span>
+        <span th:if="${param.success[0] == 'room_added'}">✓ New venue added to the campus directory.</span>
+        <span th:if="${param.success[0] == 'room_updated'}">✓ Venue specifications updated successfully.</span>
+        <span th:if="${param.success[0] == 'room_deleted'}">✓ Venue removed from the campus directory.</span>
+    </div>
+
+    <!-- Stats Summary Grid -->
+    <div class="stats-grid">
+        <div class="stat-card gold">
+            <div class="stat-label">Awaiting Confirmation</div>
+            <div class="stat-value" th:text="${pendingApprovals}">0</div>
+            <div class="stat-subtext">HOD-endorsed queue</div>
+        </div>
+        <div class="stat-card maroon">
+            <div class="stat-label">Total Campus Venues</div>
+            <div class="stat-value" th:text="${totalRooms}">0</div>
+            <div class="stat-subtext">Classrooms, halls & labs</div>
+        </div>
+        <div class="stat-card green">
+            <div class="stat-label">Approved Reservations</div>
+            <div class="stat-value" th:text="${approvedCount}">0</div>
+            <div class="stat-subtext">Keys released & confirmed</div>
+        </div>
+        <div class="stat-card red">
+            <div class="stat-label">Declined Requests</div>
+            <div class="stat-value" th:text="${rejectedCount}">0</div>
+            <div class="stat-subtext">Conflicts or rejected</div>
+        </div>
+        <div class="stat-card blue">
+            <div class="stat-label">Total Booking Logs</div>
+            <div class="stat-value" th:text="${totalBookings}">0</div>
+            <div class="stat-subtext">Cumulative reservations</div>
+        </div>
+    </div>
+
+    <!-- Main Admin Layout -->
+    <div class="admin-layout-grid">
+        <div>
+            <!-- Awaiting Final Approval (HOD Approved) -->
+            <div class="xavier-card">
+                <div class="xavier-card-header">
+                    <h3 class="xavier-card-title">Final Authorization Queue (HOD Approved)</h3>
+                    <span class="status-pill status-hod" th:text="${awaitingApprovals != null ? awaitingApprovals.size() : 0} + ' READY'">0 READY</span>
+                </div>
+
+                <div th:if="${#lists.isEmpty(awaitingApprovals)}" class="empty-state">
+                    <p>No reservations currently awaiting administrative confirmation.</p>
+                </div>
+
+                <div th:unless="${#lists.isEmpty(awaitingApprovals)}" class="table-responsive">
+                    <table class="xavier-table">
+                        <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Dept</th>
+                            <th>Venue</th>
+                            <th>Date</th>
+                            <th>Time Window</th>
+                            <th style="text-align: right;">Authorization</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="booking : ${awaitingApprovals}">
+                            <td>
+                                <div style="font-weight: 600;" th:text="${booking.requestedBy.name}">Student</div>
+                                <div style="font-size: 0.74rem; color: var(--text-muted);" th:text="${booking.requestedBy.email}">email</div>
+                            </td>
+                            <td th:text="${booking.requestedBy.department}">Dept</td>
+                            <td>
+                                <div style="font-weight: 600;" th:text="${booking.room.name}">Room</div>
+                                <div style="font-size: 0.74rem; color: var(--text-muted);" th:text="${booking.room.building}">Building</div>
+                            </td>
+                            <td style="font-weight: 600;" th:text="${booking.date}">Date</td>
+                            <td style="font-size: 0.82rem;" th:text="${booking.startTime + ' - ' + booking.endTime}">Time</td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <form th:action="@{/admin/bookings/{id}/approve(id=${booking.id})}" method="post" style="display:inline-block; margin-right: 4px;">
+                                    <button type="submit" class="btn-xavier-approve">✓ Finalize</button>
+                                </form>
+                                <form th:action="@{/admin/bookings/{id}/reject(id=${booking.id})}" method="post" style="display:inline-block;">
+                                    <button type="submit" class="btn-xavier-reject">✕ Decline</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Campus Venues Directory & Management -->
+            <div class="xavier-card">
+                <div class="xavier-card-header">
+                    <h3 class="xavier-card-title">Campus Venues Directory</h3>
+                    <span class="status-pill status-approved" th:text="${totalRooms} + ' VENUES'">0 VENUES</span>
+                </div>
+
+                <!-- Dynamic Category Tabs -->
+                <div class="xavier-tabs">
+                    <button type="button" class="xavier-tab-btn active" onclick="filterRooms('labs', this)">Labs & Seminars</button>
+                    <button type="button" class="xavier-tab-btn" onclick="filterRooms('lrs', this)">Lecture Rooms (Lrs)</button>
+                    <button type="button" class="xavier-tab-btn" onclick="filterRooms('crs', this)">Classrooms (Crs)</button>
+                    <button type="button" class="xavier-tab-btn" onclick="filterRooms('all', this)">All Venues</button>
+                </div>
+
+                <div class="table-responsive">
+                    <div th:if="${#lists.isEmpty(rooms)}" class="empty-state">
+                        <p>No rooms registered yet. Use the form on the right to register a venue.</p>
+                    </div>
+
+                    <table th:unless="${#lists.isEmpty(rooms)}" class="xavier-table">
+                        <thead>
+                        <tr>
+                            <th>Venue Name</th>
+                            <th>Campus Building / Block</th>
+                            <th>Capacity</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="room : ${rooms}" class="room-row" th:data-building="${room.building}">
+                            <td style="font-weight: 600;" th:text="${room.name}">Room 101</td>
+                            <td style="color: var(--text-muted);" th:text="${room.building}">Main Block</td>
+                            <td>
+                                <span class="status-pill status-hod" th:text="${room.capacity} + ' Seats'">50 Seats</span>
+                            </td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <button class="btn-action-sm btn-edit-sm"
+                                        th:data-id="${room.id}"
+                                        th:data-name="${room.name}"
+                                        th:data-building="${room.building}"
+                                        th:data-capacity="${room.capacity}"
+                                        onclick="showEditForm(this)">Edit</button>
+                                <form th:action="@{/admin/rooms/delete/{id}(id=${room.id})}" method="post" style="display:inline-block; margin-left: 4px;" onsubmit="return confirm('Are you sure you want to delete this room?');">
+                                    <button type="submit" class="btn-action-sm btn-delete-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Dynamic Edit Form Section -->
+                <div id="edit-room-section" class="edit-overlay-section">
+                    <h4 style="margin-top: 0; color: var(--xavier-maroon); font-family: 'Georgia', serif; margin-bottom: 12px;">Edit Venue Specifications</h4>
+                    <form id="edit-room-form" method="post" action="">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label" for="edit-name">Venue Name</label>
+                                <input type="text" id="edit-name" name="name" class="form-control" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label" for="edit-building">Building / Location</label>
+                                <input type="text" id="edit-building" name="building" class="form-control" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label" for="edit-capacity">Capacity</label>
+                                <input type="number" id="edit-capacity" name="capacity" class="form-control" required>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button type="submit" class="btn-xavier-primary">Save Changes</button>
+                            <button type="button" class="btn-xavier-outline" onclick="hideEditForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar: Add Room Form -->
+        <div>
+            <div class="xavier-card">
+                <div class="xavier-card-header">
+                    <h3 class="xavier-card-title">Register New Venue</h3>
+                </div>
+                <form th:action="@{/admin/rooms}" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Venue Name / Hall Number</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Physics Lab 1, Room 302" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="building">Campus Building / Block</label>
+                        <input type="text" id="building" name="building" class="form-control" placeholder="e.g. Science Block, Ground Floor" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="capacity">Seating Capacity</label>
+                        <input type="number" id="capacity" name="capacity" class="form-control" placeholder="e.g. 70" min="1" required>
+                    </div>
+                    <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center; margin-top: 8px;">
+                        Add Venue to Directory
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function showEditForm(button) {
+        var id = button.getAttribute('data-id');
+        var name = button.getAttribute('data-name');
+        var building = button.getAttribute('data-building');
+        var capacity = button.getAttribute('data-capacity');
+
+        document.getElementById('edit-room-section').style.display = 'block';
+        document.getElementById('edit-room-form').action = '/admin/rooms/edit/' + id;
+        document.getElementById('edit-name').value = name;
+        document.getElementById('edit-building').value = building;
+        document.getElementById('edit-capacity').value = capacity;
+        
+        document.getElementById('edit-room-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideEditForm() {
+        document.getElementById('edit-room-section').style.display = 'none';
+    }
+
+    function filterRooms(category, activeBtn) {
+        const buttons = document.querySelectorAll('.xavier-tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        activeBtn.classList.add('active');
+
+        const rows = document.querySelectorAll('.room-row');
+        rows.forEach(row => {
+            const building = row.getAttribute('data-building');
+            if (category === 'all') {
+                row.style.display = '';
+            } else if (category === 'lrs') {
+                row.style.display = (building === 'Lrs Block') ? '' : 'none';
+            } else if (category === 'crs') {
+                row.style.display = (building === 'Crs Block') ? '' : 'none';
+            } else if (category === 'labs') {
+                row.style.display = (building !== 'Lrs Block' && building !== 'Crs Block') ? '' : 'none';
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const labsBtn = document.querySelector('.xavier-tab-btn');
+        if (labsBtn) {
+            filterRooms('labs', labsBtn);
+        }
+    });
+</script>
+</body>
+</html>

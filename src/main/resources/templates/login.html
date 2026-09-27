@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Sign In | St. Xavier's College (Autonomous), Mumbai</title>
+    <link rel="icon" type="image/png" th:href="@{/images/xavier-logo.png}">
+    <link rel="stylesheet" th:href="@{/css/xavier-theme.css}">
+    <style>
+        body {
+            background-color: #f7f4ee;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            background: #ffffff;
+            border: 1px solid var(--border-warm);
+            border-top: 4px solid var(--xavier-maroon);
+            border-radius: var(--radius-md);
+            padding: 36px 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .auth-crest-wrap {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-crest-img {
+            width: 80px;
+            height: 98px;
+            margin: 0 auto 12px;
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.12));
+        }
+
+        .auth-college-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--xavier-maroon);
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+        }
+
+        .auth-tagline {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+        }
+
+        .auth-portal-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .role-selector-pills {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            background: #f7f4ec;
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .role-pill-btn {
+            flex: 1;
+            padding: 7px 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 3px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            transition: all 0.15s;
+        }
+
+        .role-pill-btn.active {
+            background: #ffffff;
+            color: var(--xavier-maroon);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-footer {
+            text-align: center;
+            padding: 18px 24px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-warm);
+            background: #f3ede2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Institutional Strip -->
+<div class="xavier-top-strip">
+    <div>
+        <a href="https://xaviers.edu" target="_blank">xaviers.edu</a>
+        <a href="#">NIRF</a>
+        <a href="#">IQAC</a>
+    </div>
+    <div style="font-weight: 600; letter-spacing: 0.04em;">
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+    </div>
+</div>
+
+<!-- Header -->
+<header class="xavier-header">
+    <div class="xavier-header-inner" style="justify-content: center; text-align: center;">
+        <div class="xavier-brand" style="justify-content: center;">
+            <img th:src="@{/images/xavier-logo.png}" alt="St. Xavier's College Crest" class="xavier-crest-emblem" style="width: 40px; height: 50px;">
+            <div>
+                <h1 style="font-size: 1.25rem;">ST. XAVIER'S COLLEGE, MUMBAI</h1>
+                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-crest-wrap">
+            <img th:src="@{/images/xavier-logo.png}" alt="St. Xavier's College Crest" class="auth-crest-img">
+            <h2 class="auth-college-title">St. Xavier's College</h2>
+            <div class="auth-tagline">Empowered Autonomous Institute</div>
+            <div class="auth-portal-name">Portal Authentication</div>
+        </div>
+
+        <!-- Role Pre-fill Tabs (Does NOT auto-login; requires password entry) -->
+        <div class="role-selector-pills">
+            <button type="button" class="role-pill-btn active" onclick="selectRole('STUDENT', 'student@test.com', this)">Student</button>
+            <button type="button" class="role-pill-btn" onclick="selectRole('HOD', 'hod@test.com', this)">Faculty / HOD</button>
+            <button type="button" class="role-pill-btn" onclick="selectRole('ADMIN', 'admin@test.com', this)">Administrator</button>
+        </div>
+
+        <!-- Notifications -->
+        <div th:if="${param.error}" class="xavier-alert xavier-alert-danger" style="padding: 8px 12px; font-size: 0.82rem; margin-bottom: 16px;">
+            ⚠️ Authentication failed. Please verify your email and password.
+        </div>
+        <div th:if="${param.logout}" class="xavier-alert xavier-alert-success" style="padding: 8px 12px; font-size: 0.82rem; margin-bottom: 16px;">
+            ✓ You have been logged out securely.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label class="form-label" for="username">College Email ID</label>
+                <input type="email" id="username" name="username" class="form-control" placeholder="student@test.com" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter account password" required autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+                Sign In to Account
+            </button>
+        </form>
+    </div>
+</div>
+
+<footer class="auth-footer">
+    © 2026 St. Xavier's College (Autonomous), 5, Mahapalika Marg, Mumbai 400 001. All rights reserved.
+</footer>
+
+<script>
+    function selectRole(role, defaultEmail, btn) {
+        document.querySelectorAll('.role-pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const usernameInput = document.getElementById('username');
+        usernameInput.value = defaultEmail;
+        const passwordInput = document.getElementById('password');
+        passwordInput.value = '';
+        passwordInput.focus();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role');
+        if (role === 'HOD') {
+            const hodBtn = document.querySelectorAll('.role-pill-btn')[1];
+            selectRole('HOD', 'hod@test.com', hodBtn);
+        } else if (role === 'ADMIN') {
+            const adminBtn = document.querySelectorAll('.role-pill-btn')[2];
+            selectRole('ADMIN', 'admin@test.com', adminBtn);
+        } else {
+            document.getElementById('username').value = 'student@test.com';
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,813 @@
+/* ==========================================================================
+   St. Xavier's College, Mumbai - Official Institutional Portal Theme
+   Heritage Jesuit Academic Aesthetic (Maroon, Cream, Warm Charcoal)
+   ========================================================================== */
+
+:root {
+    /* Official Xavier's Heritage Palette */
+    --xavier-maroon: #741114;
+    --xavier-maroon-dark: #5c0b0e;
+    --xavier-maroon-light: #8e1b1f;
+    --xavier-maroon-subtle: rgba(116, 17, 20, 0.08);
+
+    --xavier-cream: #faf7f2;
+    --xavier-cream-dark: #f0ebe1;
+    --xavier-cream-card: #ffffff;
+    
+    --xavier-gold: #b38728;
+    --xavier-gold-dark: #8c6818;
+    --xavier-gold-light: #fef8e7;
+
+    --text-main: #1e2430;
+    --text-muted: #5c6475;
+    --text-light: #8a94a6;
+
+    --border-warm: #e5ded2;
+    --border-subtle: #eee8de;
+
+    --status-pending-bg: #fffbeb;
+    --status-pending-text: #b45309;
+    --status-pending-border: #fcd34d;
+
+    --status-hod-bg: #eff6ff;
+    --status-hod-text: #1d4ed8;
+    --status-hod-border: #bfdbfe;
+
+    --status-approved-bg: #f0fdf4;
+    --status-approved-text: #15803d;
+    --status-approved-border: #bbf7d0;
+
+    --status-rejected-bg: #fef2f2;
+    --status-rejected-text: #b91c1c;
+    --status-rejected-border: #fecaca;
+
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    background-color: var(--xavier-cream);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+}
+
+/* ================= Top Utility Sub-Header ================= */
+.xavier-top-strip {
+    background-color: #f3ede2;
+    border-bottom: 1px solid #e5ded2;
+    padding: 6px 32px;
+    font-size: 0.76rem;
+    color: #4a5568;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.xavier-top-strip a {
+    color: #4a5568;
+    text-decoration: none;
+    margin-right: 14px;
+    font-weight: 500;
+}
+
+.xavier-top-strip a:hover {
+    color: var(--xavier-maroon);
+    text-decoration: underline;
+}
+
+/* ================= Official St. Xavier's Maroon Banner ================= */
+.xavier-header {
+    background-color: var(--xavier-maroon);
+    color: #ffffff;
+    border-bottom: 3px solid var(--xavier-gold);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.xavier-header-inner {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.xavier-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.xavier-crest-emblem {
+    width: 46px;
+    height: 56px;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 4px;
+    border: 2px solid var(--xavier-gold);
+    display: block;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    padding: 3px;
+}
+
+.xavier-title-group h1 {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.xavier-role-badge-tag {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fef08a;
+    border: 1px solid rgba(254, 240, 138, 0.4);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.xavier-sub-title {
+    font-size: 0.8rem;
+    color: #f0e6d6;
+    font-weight: 400;
+    margin-top: 2px;
+}
+
+/* ================= Internal Role Switcher (Requires Password) ================= */
+.xavier-switch-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.role-switch-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-switch-portal {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-switch-portal:hover,
+.role-switch-dropdown:hover .btn-switch-portal {
+    background: rgba(255, 255, 255, 0.24);
+    border-color: #ffffff;
+    color: #ffffff;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+.btn-switch-portal .chevron-icon {
+    font-size: 0.55rem;
+    transition: transform 0.2s ease;
+    opacity: 0.8;
+}
+
+.role-switch-dropdown:hover .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.role-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 8px;
+    background-color: #ffffff;
+    min-width: 285px;
+    box-shadow: 0 14px 36px rgba(18, 10, 6, 0.22), 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0d7c7;
+    border-top: 3px solid var(--xavier-maroon);
+    border-radius: 10px;
+    z-index: 1050;
+    padding: 8px;
+    animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.role-dropdown-header {
+    padding: 8px 10px 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--xavier-maroon);
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid #f2ece1;
+    margin-bottom: 6px;
+}
+
+.role-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    color: var(--text-main);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+    margin-bottom: 2px;
+}
+
+.role-dropdown-item:hover {
+    background-color: #faf5ee;
+    transform: translateX(3px);
+}
+
+.role-dropdown-item .item-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.item-icon.icon-student {
+    background: #fdf6ea;
+    border: 1px solid rgba(180, 83, 9, 0.18);
+    color: #b45309;
+}
+
+.item-icon.icon-hod {
+    background: #fbeeed;
+    border: 1px solid rgba(124, 29, 45, 0.18);
+    color: var(--xavier-maroon);
+}
+
+.item-icon.icon-admin {
+    background: #edf2f7;
+    border: 1px solid rgba(30, 58, 138, 0.18);
+    color: #1e3a8a;
+}
+
+.role-dropdown-item:hover .item-icon.icon-student {
+    background: #fef0d7;
+    border-color: rgba(180, 83, 9, 0.32);
+    color: #92400e;
+    transform: scale(1.04);
+}
+
+.role-dropdown-item:hover .item-icon.icon-hod {
+    background: #f9e2e0;
+    border-color: rgba(124, 29, 45, 0.32);
+    color: #5c1220;
+    transform: scale(1.04);
+}
+
+.role-dropdown-item:hover .item-icon.icon-admin {
+    background: #e2eaf5;
+    border-color: rgba(30, 58, 138, 0.32);
+    color: #172554;
+    transform: scale(1.04);
+}
+
+.role-dropdown-item .portal-svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+    flex-shrink: 0;
+}
+
+.role-dropdown-item .item-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.role-dropdown-item .item-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #1e2430;
+    display: block;
+    line-height: 1.25;
+}
+
+.role-dropdown-item:hover .item-title {
+    color: var(--xavier-maroon);
+}
+
+.role-dropdown-item .item-email {
+    display: block;
+    font-size: 0.72rem;
+    color: #78716c;
+    margin-top: 2px;
+}
+
+.role-dropdown-item .item-arrow {
+    font-size: 0.95rem;
+    color: #b5aba0;
+    transition: transform 0.15s ease, color 0.15s ease;
+    flex-shrink: 0;
+}
+
+.role-dropdown-item:hover .item-arrow {
+    color: var(--xavier-maroon);
+    transform: translateX(3px);
+}
+
+.role-switch-dropdown:hover .role-dropdown-content,
+.role-switch-dropdown:focus-within .role-dropdown-content {
+    display: block;
+}
+
+/* User controls */
+.xavier-user-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-text-info {
+    text-align: right;
+    line-height: 1.2;
+}
+
+.user-name-label {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.user-dept-label {
+    font-size: 0.72rem;
+    color: #f7e1b5;
+}
+
+.btn-header-logout {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-header-logout:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+}
+
+/* ================= Main Content Container ================= */
+.xavier-container {
+    max-width: 1360px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 32px 24px;
+    flex: 1;
+}
+
+.xavier-page-hero {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-warm);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.xavier-page-title {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--xavier-maroon);
+}
+
+.xavier-page-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* ================= Realistic Metric Cards ================= */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.stats-grid.stats-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.stats-grid.stats-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1100px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid,
+    .stats-grid.stats-grid-3,
+    .stats-grid.stats-grid-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid var(--border-warm);
+    border-left: 4px solid var(--xavier-maroon);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 104px;
+    box-sizing: border-box;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat-card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.stat-card.gold { border-left-color: var(--xavier-gold); }
+.stat-card.green { border-left-color: #16a34a; }
+.stat-card.blue { border-left-color: #2563eb; }
+.stat-card.red { border-left-color: #dc2626; }
+.stat-card.maroon { border-left-color: var(--xavier-maroon); }
+
+.stat-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #555e6d;
+    line-height: 1.35;
+    margin-bottom: 10px;
+}
+
+.stat-value {
+    display: block;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #1e2430;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    margin-top: auto;
+}
+
+.stat-card.gold .stat-value { color: #b45309; }
+.stat-card.green .stat-value { color: #15803d; }
+.stat-card.blue .stat-value { color: #1d4ed8; }
+.stat-card.red .stat-value { color: #b91c1c; }
+.stat-card.maroon .stat-value { color: var(--xavier-maroon); }
+
+.stat-value-text {
+    display: block;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--xavier-maroon);
+    line-height: 1.25;
+    margin-top: auto;
+}
+
+.stat-subtext {
+    display: block;
+    font-size: 0.72rem;
+    color: #78716c;
+    margin-top: 6px;
+    line-height: 1.3;
+}
+
+/* ================= Institutional Cards ================= */
+.xavier-card {
+    background: var(--xavier-cream-card);
+    border: 1px solid var(--border-warm);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+}
+
+.xavier-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.xavier-card-title {
+    font-family: "Georgia", serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--xavier-maroon);
+}
+
+/* ================= Form Controls ================= */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.form-control, .form-select {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: var(--text-main);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--xavier-maroon);
+    box-shadow: 0 0 0 3px rgba(116, 17, 20, 0.12);
+}
+
+.form-select optgroup {
+    font-weight: 700;
+    color: var(--xavier-maroon);
+    background: #fdfbf7;
+}
+
+/* ================= Buttons ================= */
+.btn-xavier-primary {
+    background-color: var(--xavier-maroon);
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-xavier-primary:hover {
+    background-color: var(--xavier-maroon-dark);
+}
+
+.btn-xavier-primary:active {
+    transform: translateY(1px);
+}
+
+.btn-xavier-outline {
+    background: transparent;
+    border: 1px solid #cbd5e1;
+    color: var(--text-main);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-xavier-outline:hover {
+    border-color: var(--xavier-maroon);
+    color: var(--xavier-maroon);
+    background: var(--xavier-maroon-subtle);
+}
+
+.btn-xavier-approve {
+    background-color: #15803d;
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.btn-xavier-approve:hover {
+    background-color: #166534;
+}
+
+.btn-xavier-reject {
+    background-color: #b91c1c;
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.btn-xavier-reject:hover {
+    background-color: #991b1b;
+}
+
+/* ================= Tables ================= */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.xavier-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.xavier-table th {
+    background-color: #f7f4ec;
+    color: #334155;
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 700;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--border-warm);
+}
+
+.xavier-table td {
+    padding: 14px 14px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+.xavier-table tbody tr:hover {
+    background-color: #fdfbf7;
+}
+
+/* ================= Status Badges ================= */
+.status-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.status-pending {
+    background: var(--status-pending-bg);
+    color: var(--status-pending-text);
+    border: 1px solid var(--status-pending-border);
+}
+
+.status-hod {
+    background: var(--status-hod-bg);
+    color: var(--status-hod-text);
+    border: 1px solid var(--status-hod-border);
+}
+
+.status-approved {
+    background: var(--status-approved-bg);
+    color: var(--status-approved-text);
+    border: 1px solid var(--status-approved-border);
+}
+
+.status-rejected {
+    background: var(--status-rejected-bg);
+    color: var(--status-rejected-text);
+    border: 1px solid var(--status-rejected-border);
+}
+
+/* ================= Tab Filters ================= */
+.xavier-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.xavier-tab-btn {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: var(--text-muted);
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.xavier-tab-btn:hover {
+    border-color: var(--xavier-maroon);
+    color: var(--xavier-maroon);
+}
+
+.xavier-tab-btn.active {
+    background-color: var(--xavier-maroon);
+    border-color: var(--xavier-maroon);
+    color: #ffffff;
+}
+
+/* ================= Alerts ================= */
+.xavier-alert {
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.xavier-alert-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #15803d;
+}
+
+.xavier-alert-danger {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
