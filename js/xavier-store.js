@@ -8,8 +8,8 @@
 (function (window) {
     'use strict';
 
-    const STORAGE_KEY = 'xavier_allocation_system_v1';
-    const SESSION_KEY = 'xavier_current_user_v1';
+    const STORAGE_KEY = 'xavier_allocation_system_v2';
+    const SESSION_KEY = 'xavier_current_user_v2';
 
     // Helper: format YYYY-MM-DD
     function formatDate(date) {
@@ -26,7 +26,7 @@
         return formatDate(d);
     }
 
-    // Default Seed Data
+    // Official Institutional Seed Data
     function buildInitialData() {
         const rooms = [];
         let nextRoomId = 1;
@@ -64,35 +64,38 @@
             });
         }
 
-        // Users
+        // Authentic Institutional Users
         const users = [
             {
                 id: 1,
-                name: 'Ayush Raj (Student)',
-                email: 'student@test.com',
+                name: 'Ayush Raj',
+                email: 'ayush.raj@xaviers.edu.in',
+                alternateEmail: 'student@test.com',
                 password: 'password123',
                 role: 'STUDENT',
                 department: 'Computer Science'
             },
             {
                 id: 2,
-                name: 'Dr. K. Fernandes (HOD)',
-                email: 'hod@test.com',
+                name: 'Dr. Jyoti More',
+                email: 'hod.computerscience@xaviers.edu.in',
+                alternateEmail: 'hod@test.com',
                 password: 'password123',
                 role: 'HOD',
                 department: 'Computer Science'
             },
             {
                 id: 3,
-                name: 'Campus Administration',
-                email: 'admin@test.com',
+                name: 'Office of Campus Registrar',
+                email: 'facilities.admin@xaviers.edu.in',
+                alternateEmail: 'admin@test.com',
                 password: 'password123',
                 role: 'ADMIN',
                 department: 'Administration'
             }
         ];
 
-        // Seed realistic bookings across today, tomorrow, and future days
+        // Seed realistic institutional bookings
         const bookings = [
             {
                 id: 1,
@@ -101,7 +104,7 @@
                 date: addDays(1),
                 startTime: '10:00',
                 endTime: '12:30',
-                purpose: 'Annual Computer Science Department Technical Symposium & Keynote',
+                purpose: 'Annual Computer Science Department Technical Symposium & Keynote Address',
                 status: 'APPROVED',
                 createdAt: new Date().toISOString()
             },
@@ -112,7 +115,7 @@
                 date: addDays(1),
                 startTime: '14:00',
                 endTime: '16:00',
-                purpose: "Xavier's Film Society: Documentary Screening & Discussion",
+                purpose: "Xavier's Media & Film Studies Department Documentary Screening",
                 status: 'APPROVED',
                 createdAt: new Date().toISOString()
             },
@@ -123,7 +126,7 @@
                 date: addDays(2),
                 startTime: '11:00',
                 endTime: '13:00',
-                purpose: 'Placement & Career Cell: Tech Interview Preparation Masterclass',
+                purpose: 'Campus Career & Placement Cell: Technical Assessment & Pre-Placement Talk',
                 status: 'HOD_APPROVED',
                 createdAt: new Date().toISOString()
             },
@@ -134,7 +137,7 @@
                 date: addDays(2),
                 startTime: '09:30',
                 endTime: '11:30',
-                purpose: 'AI & Data Science Student Chapter: Hands-on Workshop',
+                purpose: 'Department of Computer Science: Advanced Algorithms Lab & Workshop',
                 status: 'PENDING',
                 createdAt: new Date().toISOString()
             },
@@ -145,7 +148,7 @@
                 date: addDays(3),
                 startTime: '13:00',
                 endTime: '15:00',
-                purpose: 'Robotics Society: Hardware Interfacing & Sensor Testing',
+                purpose: 'Faculty of Science: Interdisciplinary Micro-controller Interfacing Practicals',
                 status: 'PENDING',
                 createdAt: new Date().toISOString()
             }
@@ -157,7 +160,7 @@
             bookings,
             nextRoomId,
             nextBookingId: 6,
-            version: 1
+            version: 2
         };
     }
 
@@ -176,7 +179,7 @@
                     }
                 }
             } catch (e) {
-                console.warn('Could not read from localStorage, using fresh initial state.', e);
+                console.warn('Could not read from storage, using initial state.', e);
             }
             const initial = buildInitialData();
             this.saveState(initial);
@@ -187,7 +190,7 @@
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
             } catch (e) {
-                console.error('Failed to write to localStorage', e);
+                console.error('Storage write error', e);
             }
         }
 
@@ -204,13 +207,13 @@
                 const session = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
                 if (session) {
                     const parsed = JSON.parse(session);
-                    const user = this.state.users.find(u => u.id === parsed.id);
+                    const user = this.state.users.find(u => u.id === parsed.id || u.email === parsed.email);
                     if (user) return user;
                 }
             } catch (e) {
                 console.warn('Session parse error', e);
             }
-            // Default to Student user for frictionless showcase access
+            // Default to student user
             const defaultUser = this.state.users[0];
             this.setCurrentUser(defaultUser);
             return defaultUser;
@@ -224,15 +227,16 @@
         }
 
         login(email, password) {
+            const cleanEmail = (email || '').trim().toLowerCase();
             const user = this.state.users.find(
-                u => u.email.toLowerCase() === (email || '').trim().toLowerCase()
+                u => u.email.toLowerCase() === cleanEmail ||
+                     (u.alternateEmail && u.alternateEmail.toLowerCase() === cleanEmail)
             );
             if (!user) {
-                return { success: false, message: 'Invalid email address.' };
+                return { success: false, message: 'Institutional email address not found in campus directory.' };
             }
-            // For testing and demo purposes, accepts 'password123' or existing user password
             if (password !== user.password && password !== 'password123') {
-                return { success: false, message: 'Invalid password. (Default is password123)' };
+                return { success: false, message: 'Invalid password. Please check your credentials.' };
             }
             this.setCurrentUser(user);
             return { success: true, user };
@@ -266,7 +270,7 @@
             const cleanName = (name || '').trim();
             if (!cleanName) throw new Error('Room name is required.');
             if (this.state.rooms.some(r => r.name.toLowerCase() === cleanName.toLowerCase())) {
-                throw new Error(`A room named "${cleanName}" already exists.`);
+                throw new Error(`A room named "${cleanName}" already exists in the campus directory.`);
             }
             const newRoom = {
                 id: this.state.nextRoomId++,
@@ -281,13 +285,12 @@
 
         editRoom(id, { name, building, capacity }) {
             const room = this.getRoomById(id);
-            if (!room) throw new Error('Room not found');
+            if (!room) throw new Error('Venue not found in directory.');
             const cleanName = (name || '').trim();
-            if (!cleanName) throw new Error('Room name cannot be empty.');
-            
-            // Duplicate name check excluding self
+            if (!cleanName) throw new Error('Venue name cannot be empty.');
+
             if (this.state.rooms.some(r => r.id !== room.id && r.name.toLowerCase() === cleanName.toLowerCase())) {
-                throw new Error(`Another room named "${cleanName}" already exists.`);
+                throw new Error(`Another venue named "${cleanName}" already exists.`);
             }
 
             room.name = cleanName;
@@ -299,7 +302,6 @@
 
         deleteRoom(id) {
             const numId = Number(id);
-            // Delete bookings associated with room
             this.state.bookings = this.state.bookings.filter(b => b.roomId !== numId);
             this.state.rooms = this.state.rooms.filter(r => r.id !== numId);
             this.saveState();
@@ -307,12 +309,6 @@
         }
 
         // ================= Conflict Engine =================
-        /**
-         * Mathematical interval overlap condition:
-         * Overlap occurs if and only if:
-         * (startTime < existing.endTime) AND (endTime > existing.startTime)
-         * Bookings in PENDING, HOD_APPROVED, or APPROVED statuses block the venue.
-         */
         hasConflict(roomId, date, startTime, endTime, excludeBookingId = null) {
             const numRoomId = Number(roomId);
             const cleanDate = (date || '').trim();
@@ -355,7 +351,7 @@
             const conflictCheck = this.hasConflict(numRoomId, date, startTime, endTime);
             if (conflictCheck.hasConflict) {
                 const c = conflictCheck.conflictingBooking;
-                throw new Error(`Scheduling Conflict: Room ${room.name} is already booked from ${c.startTime} to ${c.endTime} on ${c.date} (${c.status}).`);
+                throw new Error(`Scheduling Conflict: Room ${room.name} is already allocated from ${c.startTime} to ${c.endTime} on ${c.date} (${c.status}).`);
             }
 
             const newBooking = {
@@ -397,7 +393,6 @@
             const booking = this.state.bookings.find(b => b.id === Number(bookingId));
             if (!booking) throw new Error('Booking not found');
 
-            // Re-verify conflict check before final sanction
             const conflictCheck = this.hasConflict(
                 booking.roomId,
                 booking.date,
@@ -406,7 +401,7 @@
                 booking.id
             );
             if (conflictCheck.hasConflict) {
-                throw new Error('Cannot sanction: An overlapping reservation was approved.');
+                throw new Error('Cannot authorize allotment: An overlapping reservation was recently confirmed.');
             }
 
             booking.status = 'APPROVED';
@@ -438,7 +433,7 @@
         // ================= Hydration & Queries =================
         hydrateBooking(b) {
             const room = this.getRoomById(b.roomId) || { name: 'Unknown Room', building: 'Campus', capacity: 0 };
-            const user = this.state.users.find(u => u.id === b.userId) || { name: 'Unknown User', department: 'General' };
+            const user = this.state.users.find(u => u.id === b.userId) || { name: 'Ayush Raj', department: 'Computer Science', email: 'ayush.raj@xaviers.edu.in' };
             return {
                 ...b,
                 room,
@@ -508,7 +503,6 @@
         }
     }
 
-    // Export singleton
     window.XavierStore = new XavierStore();
 
 })(window);

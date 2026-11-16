@@ -33,9 +33,10 @@
         <a href="https://xaviers.edu" target="_blank" rel="noopener">xaviers.edu</a>
         <a href="#">NIRF</a>
         <a href="#">IQAC</a>
+        <a href="#">Academic Council</a>
     </div>
     <div style="font-weight: 600; letter-spacing: 0.04em;">
-        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE • NAAC A++
     </div>
 </div>
 
@@ -46,7 +47,7 @@
             <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="xavier-crest-emblem">
             <div class="xavier-title-group">
                 <h1>ST. XAVIER'S COLLEGE, MUMBAI <span class="xavier-role-badge-tag">STUDENT PORTAL</span></h1>
-                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+                <div class="xavier-sub-title">Campus Venue Allocation & Space Requisition</div>
             </div>
         </div>
 
@@ -54,32 +55,32 @@
         <div class="xavier-switch-menu">
             <div class="role-switch-dropdown">
                 <button type="button" class="btn-switch-portal" onclick="toggleDropdown(this)">
-                    <span>⇄ Switch Portal</span>
+                    <span>⇄ Switch Desk</span>
                     <span class="chevron-icon">▾</span>
                 </button>
                 <div class="role-dropdown-content">
-                    <div class="role-dropdown-header">St. Xavier's Portals</div>
+                    <div class="role-dropdown-header">Institutional Portals</div>
                     <a href="student.html" class="role-dropdown-item" style="background-color: #fcf8f2;">
-                        <div class="item-icon icon-student">🎓</div>
+                        <div class="item-icon icon-student" style="font-weight: 700; font-size: 0.82rem;">ST</div>
                         <div class="item-text">
                             <span class="item-title" style="color: var(--xavier-maroon);">Student Portal</span>
-                            <span class="item-email">student@test.com (Current)</span>
+                            <span class="item-email">ayush.raj@xaviers.edu.in</span>
                         </div>
                         <span class="item-arrow" style="color: var(--xavier-maroon);">✓</span>
                     </a>
                     <a href="hod.html" onclick="switchPortal('HOD')" class="role-dropdown-item">
-                        <div class="item-icon icon-hod">🧑‍🏫</div>
+                        <div class="item-icon icon-hod" style="font-weight: 700; font-size: 0.82rem;">HD</div>
                         <div class="item-text">
                             <span class="item-title">Faculty / HOD Portal</span>
-                            <span class="item-email">hod@test.com</span>
+                            <span class="item-email">hod.computerscience@xaviers.edu.in</span>
                         </div>
                         <span class="item-arrow">›</span>
                     </a>
                     <a href="admin.html" onclick="switchPortal('ADMIN')" class="role-dropdown-item">
-                        <div class="item-icon icon-admin">🔑</div>
+                        <div class="item-icon icon-admin" style="font-weight: 700; font-size: 0.82rem;">AD</div>
                         <div class="item-text">
-                            <span class="item-title">Central Admin Console</span>
-                            <span class="item-email">admin@test.com</span>
+                            <span class="item-title">Central Administration</span>
+                            <span class="item-email">facilities.admin@xaviers.edu.in</span>
                         </div>
                         <span class="item-arrow">›</span>
                     </a>
@@ -88,10 +89,10 @@
 
             <div class="xavier-user-badge">
                 <div class="user-text-info">
-                    <div class="user-name-label" id="userNameLabel">Ayush Raj (Student)</div>
-                    <div class="user-dept-label" id="userDeptLabel">Computer Science</div>
+                    <div class="user-name-label" id="userNameLabel">Ayush Raj</div>
+                    <div class="user-dept-label" id="userDeptLabel">Department of Computer Science</div>
                 </div>
-                <button type="button" class="btn-header-logout" onclick="handleLogout()">Logout</button>
+                <button type="button" class="btn-header-logout" onclick="handleLogout()">Sign Out</button>
             </div>
         </div>
     </div>
@@ -101,15 +102,15 @@
     <!-- Page Hero -->
     <div class="xavier-page-hero">
         <div>
-            <h2 class="xavier-page-title">Room & Venue Reservation</h2>
-            <p class="xavier-page-desc">Reserve lecture halls, science laboratories, and seminar halls across campus for academic and club events.</p>
+            <h2 class="xavier-page-title">Venue Requisition & Booking Desk</h2>
+            <p class="xavier-page-desc">Official space booking for academic symposiums, society meetings, student chapters, and laboratory workshops.</p>
         </div>
         <div style="display: flex; gap: 10px;">
             <a href="schedule.html" class="btn-xavier-outline">
-                📅 View Campus Schedule
+                View Campus Schedule
             </a>
             <button type="button" class="btn-xavier-outline" onclick="loadDashboard()">
-                🔄 Refresh Status
+                Refresh Status
             </button>
         </div>
     </div>
@@ -124,21 +125,21 @@
             <div class="stat-label">Total Reservations</div>
             <div>
                 <div class="stat-value" id="statTotal">0</div>
-                <div class="stat-subtext">Cumulative campus booking requests</div>
+                <div class="stat-subtext">Department requisition requests</div>
             </div>
         </div>
         <div class="stat-card green">
-            <div class="stat-label">Confirmed & Active</div>
+            <div class="stat-label">Confirmed & Allotted</div>
             <div>
                 <div class="stat-value" id="statApproved">0</div>
                 <div class="stat-subtext">Approved and room keys issued</div>
             </div>
         </div>
         <div class="stat-card gold">
-            <div class="stat-label">Pending Reviews</div>
+            <div class="stat-label">Pending Clearance</div>
             <div>
                 <div class="stat-value" id="statPending">0</div>
-                <div class="stat-subtext">Awaiting HOD or Admin clearance</div>
+                <div class="stat-subtext">Awaiting HOD or Registry clearance</div>
             </div>
         </div>
     </div>
@@ -148,14 +149,14 @@
         <!-- Room Request Form -->
         <div class="xavier-card">
             <div class="xavier-card-header">
-                <h3 class="xavier-card-title">Book a Campus Venue</h3>
+                <h3 class="xavier-card-title">Submit Venue Requisition</h3>
             </div>
 
             <form id="bookingForm" onsubmit="handleBookingSubmit(event)">
                 <div class="form-group">
                     <label class="form-label" for="roomSelect">Select Room / Hall</label>
                     <select id="roomSelect" name="roomId" class="form-select" required>
-                        <option value="">-- Choose a Room / Hall --</option>
+                        <option value="">-- Select Campus Venue --</option>
                     </select>
                 </div>
 
@@ -226,12 +227,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="purposeInput">Purpose of Reservation</label>
-                    <textarea id="purposeInput" name="purpose" class="form-control" rows="3" placeholder="State event name, club, or academic activity details..." required></textarea>
+                    <label class="form-label" for="purposeInput">Purpose & Event Details</label>
+                    <textarea id="purposeInput" name="purpose" class="form-control" rows="3" placeholder="Specify society name, guest speaker, academic symposium, or workshop description..." required></textarea>
                 </div>
 
-                <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center;">
-                    Submit Reservation Request
+                <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center; padding: 11px;">
+                    Submit Requisition for Departmental Review
                 </button>
             </form>
         </div>
@@ -239,12 +240,12 @@
         <!-- My Bookings List -->
         <div class="xavier-card">
             <div class="xavier-card-header">
-                <h3 class="xavier-card-title">My Reservation History</h3>
+                <h3 class="xavier-card-title">Department Requisition Log</h3>
                 <span class="status-pill status-hod" id="historyCountBadge">0 TOTAL</span>
             </div>
 
             <div id="emptyHistory" class="empty-state" style="display: none;">
-                <p>No reservations requested yet. Submit a request using the form on the left.</p>
+                <p>No active requisitions recorded. Submit an application using the requisition form.</p>
             </div>
 
             <div id="tableWrap" class="table-responsive">
@@ -321,30 +322,30 @@
 
     function populateRoomDropdown() {
         const select = document.getElementById('roomSelect');
-        select.innerHTML = '<option value="">-- Choose a Room / Hall --</option>';
+        select.innerHTML = '<option value="">-- Select Campus Venue --</option>';
 
         const rooms = window.XavierStore.getRooms();
 
         const specialGroup = document.createElement('optgroup');
-        specialGroup.label = '🔬 Specialized Rooms & Labs';
+        specialGroup.label = 'Specialized Venues & Laboratories';
 
         const lrsGroup = document.createElement('optgroup');
-        lrsGroup.label = '📚 Lecture Rooms (Lrs 1 - 50)';
+        lrsGroup.label = 'Lecture Halls (Lrs 1 - 50)';
 
         const crsGroup = document.createElement('optgroup');
-        crsGroup.label = '🏫 Classrooms (Crs 1 - 40)';
+        crsGroup.label = 'Classrooms (Crs 1 - 40)';
 
         rooms.forEach(r => {
             const opt = document.createElement('option');
             opt.value = r.id;
             if (r.building === 'Lrs Block') {
-                opt.textContent = `${r.name} (Cap: ${r.capacity})`;
+                opt.textContent = `${r.name} (Capacity: ${r.capacity})`;
                 lrsGroup.appendChild(opt);
             } else if (r.building === 'Crs Block') {
-                opt.textContent = `${r.name} (Cap: ${r.capacity})`;
+                opt.textContent = `${r.name} (Capacity: ${r.capacity})`;
                 crsGroup.appendChild(opt);
             } else {
-                opt.textContent = `${r.name} (${r.building} - Cap: ${r.capacity})`;
+                opt.textContent = `${r.name} (${r.building} - Capacity: ${r.capacity})`;
                 specialGroup.appendChild(opt);
             }
         });
@@ -357,7 +358,7 @@
     function loadDashboard() {
         const user = window.XavierStore.getCurrentUser();
         document.getElementById('userNameLabel').textContent = user.name;
-        document.getElementById('userDeptLabel').textContent = user.department || 'Undergraduate';
+        document.getElementById('userDeptLabel').textContent = user.department ? `Department of ${user.department}` : 'Undergraduate Student';
 
         const myBookings = window.XavierStore.getBookingsForUser(user.id);
 
@@ -384,18 +385,20 @@
 
                 let badgeHtml = '';
                 if (b.status === 'PENDING') {
-                    badgeHtml = '<span class="status-pill status-pending">Pending HOD</span>';
+                    badgeHtml = '<span class="status-pill status-pending">Under HOD Review</span>';
                 } else if (b.status === 'HOD_APPROVED') {
-                    badgeHtml = '<span class="status-pill status-hod">HOD Approved</span>';
+                    badgeHtml = '<span class="status-pill status-hod">HOD Recommended</span>';
                 } else if (b.status === 'APPROVED') {
-                    badgeHtml = '<span class="status-pill status-approved">Approved</span>';
+                    badgeHtml = '<span class="status-pill status-approved">Approved & Allotted</span>';
                 } else if (b.status === 'REJECTED') {
-                    badgeHtml = '<span class="status-pill status-rejected">Rejected</span>';
+                    badgeHtml = '<span class="status-pill status-rejected">Declined</span>';
                 }
 
                 let cancelBtn = '';
                 if (b.status === 'PENDING') {
-                    cancelBtn = `<button class="btn-action-sm btn-delete-sm" onclick="handleCancel(${b.id})" title="Cancel Request">✕</button>`;
+                    cancelBtn = `<button class="btn-action-sm btn-delete-sm" onclick="handleCancel(${b.id})" title="Cancel Requisition">Withdraw</button>`;
+                } else {
+                    cancelBtn = `<span style="color: var(--text-light); font-size: 0.74rem;">—</span>`;
                 }
 
                 tr.innerHTML = `
@@ -405,7 +408,7 @@
                     </td>
                     <td style="font-weight: 600;">${b.date}</td>
                     <td style="font-size: 0.82rem;">${b.startTime} - ${b.endTime}</td>
-                    <td style="max-width: 180px; font-size: 0.84rem;">${b.purpose}</td>
+                    <td style="max-width: 220px; font-size: 0.84rem;">${b.purpose}</td>
                     <td style="text-align: right;">${badgeHtml}</td>
                     <td style="text-align: center;">${cancelBtn}</td>
                 `;
@@ -431,24 +434,23 @@
                 purpose
             });
 
-            showBanner('success', `✓ Reservation request for <strong>${newBooking.room.name}</strong> submitted successfully! It is now awaiting HOD departmental endorsement.`);
+            showBanner('success', `Requisition for <strong>${newBooking.room.name}</strong> submitted successfully. It has been forwarded to the Head of Department for review.`);
             document.getElementById('purposeInput').value = '';
             loadDashboard();
         } catch (err) {
-            showBanner('danger', `⚠️ ${err.message}`);
+            showBanner('danger', err.message);
         }
     }
 
     function handleCancel(bookingId) {
-        if (confirm('Are you sure you want to cancel this pending reservation request?')) {
+        if (confirm('Withdraw this pending venue requisition?')) {
             window.XavierStore.cancelBooking(bookingId);
-            showBanner('success', '✓ Reservation request cancelled.');
+            showBanner('success', 'Venue requisition withdrawn successfully.');
             loadDashboard();
         }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Set default date to tomorrow
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         const yyyy = tomorrow.getFullYear();

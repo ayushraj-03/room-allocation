@@ -53,28 +53,28 @@
                     <span class="chevron-icon">▾</span>
                 </button>
                 <div class="role-dropdown-content">
-                    <div class="role-dropdown-header">St. Xavier's Portals</div>
+                    <div class="role-dropdown-header">Institutional Portals</div>
                     <a href="student.html" onclick="switchPortal('STUDENT')" class="role-dropdown-item">
-                        <div class="item-icon icon-student">🎓</div>
+                        <div class="item-icon icon-student" style="font-weight: 700; font-size: 0.82rem;">ST</div>
                         <div class="item-text">
                             <span class="item-title">Student Portal</span>
-                            <span class="item-email">student@test.com</span>
+                            <span class="item-email">ayush.raj@xaviers.edu.in</span>
                         </div>
                         <span class="item-arrow">›</span>
                     </a>
                     <a href="hod.html" onclick="switchPortal('HOD')" class="role-dropdown-item">
-                        <div class="item-icon icon-hod">🧑‍🏫</div>
+                        <div class="item-icon icon-hod" style="font-weight: 700; font-size: 0.82rem;">HD</div>
                         <div class="item-text">
                             <span class="item-title">Faculty / HOD Portal</span>
-                            <span class="item-email">hod@test.com</span>
+                            <span class="item-email">hod.computerscience@xaviers.edu.in</span>
                         </div>
                         <span class="item-arrow">›</span>
                     </a>
                     <a href="admin.html" onclick="switchPortal('ADMIN')" class="role-dropdown-item">
-                        <div class="item-icon icon-admin">🔑</div>
+                        <div class="item-icon icon-admin" style="font-weight: 700; font-size: 0.82rem;">AD</div>
                         <div class="item-text">
-                            <span class="item-title">Central Admin Console</span>
-                            <span class="item-email">admin@test.com</span>
+                            <span class="item-title">Central Administration</span>
+                            <span class="item-email">facilities.admin@xaviers.edu.in</span>
                         </div>
                         <span class="item-arrow">›</span>
                     </a>
@@ -144,7 +144,9 @@
 
         <div class="table-responsive">
             <div id="emptySchedule" class="empty-state" style="display: none;">
-                <div style="font-size: 2.5rem; margin-bottom: 12px;">📅</div>
+                <div style="margin-bottom: 12px; color: var(--text-muted);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
                 <p>No approved reservations match the selected filter criteria.</p>
             </div>
 

@@ -24,7 +24,7 @@
 
         .auth-card {
             width: 100%;
-            max-width: 460px;
+            max-width: 450px;
             background: #ffffff;
             border: 1px solid var(--border-warm);
             border-top: 4px solid var(--xavier-maroon);
@@ -39,8 +39,8 @@
         }
 
         .auth-crest-img {
-            width: 80px;
-            height: 98px;
+            width: 78px;
+            height: 96px;
             margin: 0 auto 12px;
             display: block;
             object-fit: contain;
@@ -57,7 +57,7 @@
         }
 
         .auth-tagline {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             color: var(--text-muted);
             margin-top: 4px;
             text-transform: uppercase;
@@ -86,8 +86,8 @@
 
         .role-pill-btn {
             flex: 1;
-            padding: 8px 4px;
-            font-size: 0.78rem;
+            padding: 9px 4px;
+            font-size: 0.8rem;
             font-weight: 600;
             text-align: center;
             border-radius: 3px;
@@ -104,45 +104,24 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .instant-demo-box {
+        .portal-help-links {
             margin-top: 24px;
-            padding-top: 18px;
-            border-top: 1px dashed var(--border-warm);
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
             text-align: center;
-        }
-
-        .instant-demo-label {
-            font-size: 0.74rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            font-weight: 700;
-            margin-bottom: 10px;
+            line-height: 1.6;
         }
 
-        .instant-btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-        }
-
-        .btn-instant {
-            padding: 7px 4px;
-            font-size: 0.76rem;
-            font-weight: 600;
-            border: 1px solid var(--border-warm);
-            border-radius: var(--radius-sm);
-            background: #fdfbf7;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .btn-instant:hover {
-            border-color: var(--xavier-maroon);
+        .portal-help-links a {
             color: var(--xavier-maroon);
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(116, 17, 20, 0.08);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .portal-help-links a:hover {
+            text-decoration: underline;
         }
 
         .auth-footer {
@@ -163,9 +142,10 @@
         <a href="https://xaviers.edu" target="_blank" rel="noopener">xaviers.edu</a>
         <a href="#">NIRF</a>
         <a href="#">IQAC</a>
+        <a href="#">Internal Audit</a>
     </div>
     <div style="font-weight: 600; letter-spacing: 0.04em;">
-        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE • NAAC A++
     </div>
 </div>
 
@@ -176,7 +156,7 @@
             <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="xavier-crest-emblem" style="width: 40px; height: 50px;">
             <div>
                 <h1 style="font-size: 1.25rem;">ST. XAVIER'S COLLEGE, MUMBAI</h1>
-                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+                <div class="xavier-sub-title">Campus Venue Allocation & Academic Space Scheduling</div>
             </div>
         </div>
     </div>
@@ -188,14 +168,14 @@
             <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="auth-crest-img">
             <h2 class="auth-college-title">St. Xavier's College</h2>
             <div class="auth-tagline">Empowered Autonomous Institute</div>
-            <div class="auth-portal-name">Portal Authentication Gateway</div>
+            <div class="auth-portal-name">Institutional Access Gateway</div>
         </div>
 
-        <!-- Role Select Tabs -->
+        <!-- Official Role Selector Tabs -->
         <div class="role-selector-pills">
-            <button type="button" class="role-pill-btn active" onclick="selectRole('STUDENT', 'student@test.com', this)">Student</button>
-            <button type="button" class="role-pill-btn" onclick="selectRole('HOD', 'hod@test.com', this)">Faculty / HOD</button>
-            <button type="button" class="role-pill-btn" onclick="selectRole('ADMIN', 'admin@test.com', this)">Administrator</button>
+            <button type="button" class="role-pill-btn active" onclick="selectRole('STUDENT', 'ayush.raj@xaviers.edu.in', this)">Student Portal</button>
+            <button type="button" class="role-pill-btn" onclick="selectRole('HOD', 'hod.computerscience@xaviers.edu.in', this)">Faculty / HOD</button>
+            <button type="button" class="role-pill-btn" onclick="selectRole('ADMIN', 'facilities.admin@xaviers.edu.in', this)">Administration</button>
         </div>
 
         <!-- Notification Alert -->
@@ -203,35 +183,34 @@
 
         <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="form-group">
-                <label class="form-label" for="username">College Email ID</label>
-                <input type="email" id="username" name="username" class="form-control" value="student@test.com" required autocomplete="username">
+                <label class="form-label" for="username">Institutional Email ID</label>
+                <input type="email" id="username" name="username" class="form-control" value="ayush.raj@xaviers.edu.in" required autocomplete="username">
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="password">Password</label>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label class="form-label" for="password" style="margin-bottom: 0;">Password</label>
+                    <a href="#" style="font-size: 0.74rem; color: var(--xavier-maroon); text-decoration: none;" onclick="alert('For password reset assistance, please contact the IT Infrastructure Helpdesk (it.support@xaviers.edu.in).'); return false;">Forgot Password?</a>
+                </div>
                 <input type="password" id="password" name="password" class="form-control" value="password123" required autocomplete="current-password">
-                <small style="color: var(--text-muted); font-size: 0.74rem; display: block; margin-top: 4px;">
-                    Demo password: <code>password123</code>
-                </small>
             </div>
 
-            <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
-                Sign In to Account →
+            <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                <input type="checkbox" id="rememberMe" checked style="accent-color: var(--xavier-maroon);">
+                <label for="rememberMe" style="font-size: 0.78rem; color: var(--text-muted); cursor: pointer; margin-bottom: 0;">Keep me authenticated on this workstation</label>
+            </div>
+
+            <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center; padding: 11px;">
+                Sign In to Portal →
             </button>
         </form>
 
-        <!-- One-Click Instant Sign-In Shortcuts -->
-        <div class="instant-demo-box">
-            <div class="instant-demo-label">⚡ One-Click Instant Showcase Access</div>
-            <div class="instant-btn-group">
-                <button type="button" class="btn-instant" onclick="instantAccess('STUDENT')">🎓 Student</button>
-                <button type="button" class="btn-instant" onclick="instantAccess('HOD')">🧑‍🏫 HOD</button>
-                <button type="button" class="btn-instant" onclick="instantAccess('ADMIN')">🔑 Admin</button>
+        <div class="portal-help-links">
+            <div style="margin-bottom: 8px;">
+                <a href="schedule.html">View Campus Room Schedule & Timetable Matrix →</a>
             </div>
-            <div style="margin-top: 14px;">
-                <a href="schedule.html" style="color: var(--xavier-maroon); font-size: 0.82rem; font-weight: 600; text-decoration: none;">
-                    📅 Browse Public Campus Timetable & Room Availability →
-                </a>
+            <div style="font-size: 0.74rem; color: var(--text-light);">
+                IT Infrastructure Support Desk • Internal Extn: 661 • it.support@xaviers.edu.in
             </div>
         </div>
     </div>
@@ -256,7 +235,7 @@
 
     function showAlert(msg) {
         const box = document.getElementById('alertBox');
-        box.textContent = '⚠️ ' + msg;
+        box.textContent = msg;
         box.style.display = 'block';
     }
 
@@ -276,11 +255,6 @@
         }
 
         routeToRole(res.user.role);
-    }
-
-    function instantAccess(role) {
-        const user = window.XavierStore.switchRole(role);
-        routeToRole(user.role);
     }
 
     function routeToRole(role) {
