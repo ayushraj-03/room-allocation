@@ -8,8 +8,8 @@
 (function (window) {
     'use strict';
 
-    const STORAGE_KEY = 'xavier_allocation_system_v2';
-    const SESSION_KEY = 'xavier_current_user_v2';
+    const STORAGE_KEY = 'xavier_allocation_system_v3';
+    const SESSION_KEY = 'xavier_current_user_v3';
 
     // Helper: format YYYY-MM-DD
     function formatDate(date) {
@@ -68,8 +68,8 @@
         const users = [
             {
                 id: 1,
-                name: 'Ayush Raj',
-                email: 'ayush.raj@xaviers.edu.in',
+                name: 'Student Representative',
+                email: 'abc@xaviers.edu.in',
                 alternateEmail: 'student@test.com',
                 password: 'password123',
                 role: 'STUDENT',
@@ -457,7 +457,7 @@
         // ================= Hydration & Queries =================
         hydrateBooking(b) {
             const room = this.getRoomById(b.roomId) || { name: 'Unknown Room', building: 'Campus', capacity: 0 };
-            const user = this.state.users.find(u => u.id === b.userId) || { name: 'Ayush Raj', department: 'Computer Science', email: 'ayush.raj@xaviers.edu.in' };
+            const user = this.state.users.find(u => u.id === b.userId) || { name: 'Student Representative', department: 'Computer Science', email: 'abc@xaviers.edu.in' };
             return {
                 ...b,
                 room,
