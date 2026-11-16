@@ -248,7 +248,7 @@
         const email = document.getElementById('username').value;
         const pass = document.getElementById('password').value;
 
-        const res = window.XavierStore.login(email, pass);
+        const res = window.XavierStore.login(email, pass, currentRole);
         if (!res.success) {
             showAlert(res.message);
             return;
