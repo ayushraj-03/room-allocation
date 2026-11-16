@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal | St. Xavier's College (Autonomous), Mumbai</title>
+    <link rel="icon" type="image/png" href="images/xavier-logo.png">
+    <link rel="stylesheet" href="css/xavier-theme.css">
+    <style>
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 960px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .time-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Institutional Strip -->
+<div class="xavier-top-strip">
+    <div>
+        <a href="https://xaviers.edu" target="_blank" rel="noopener">xaviers.edu</a>
+        <a href="#">NIRF</a>
+        <a href="#">IQAC</a>
+    </div>
+    <div style="font-weight: 600; letter-spacing: 0.04em;">
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+    </div>
+</div>
+
+<!-- Header -->
+<header class="xavier-header">
+    <div class="xavier-header-inner">
+        <div class="xavier-brand">
+            <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="xavier-crest-emblem">
+            <div class="xavier-title-group">
+                <h1>ST. XAVIER'S COLLEGE, MUMBAI <span class="xavier-role-badge-tag">STUDENT PORTAL</span></h1>
+                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+            </div>
+        </div>
+
+        <!-- Role Switcher & User Controls -->
+        <div class="xavier-switch-menu">
+            <div class="role-switch-dropdown">
+                <button type="button" class="btn-switch-portal" onclick="toggleDropdown(this)">
+                    <span>⇄ Switch Portal</span>
+                    <span class="chevron-icon">▾</span>
+                </button>
+                <div class="role-dropdown-content">
+                    <div class="role-dropdown-header">St. Xavier's Portals</div>
+                    <a href="student.html" class="role-dropdown-item" style="background-color: #fcf8f2;">
+                        <div class="item-icon icon-student">🎓</div>
+                        <div class="item-text">
+                            <span class="item-title" style="color: var(--xavier-maroon);">Student Portal</span>
+                            <span class="item-email">student@test.com (Current)</span>
+                        </div>
+                        <span class="item-arrow" style="color: var(--xavier-maroon);">✓</span>
+                    </a>
+                    <a href="hod.html" onclick="switchPortal('HOD')" class="role-dropdown-item">
+                        <div class="item-icon icon-hod">🧑‍🏫</div>
+                        <div class="item-text">
+                            <span class="item-title">Faculty / HOD Portal</span>
+                            <span class="item-email">hod@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a href="admin.html" onclick="switchPortal('ADMIN')" class="role-dropdown-item">
+                        <div class="item-icon icon-admin">🔑</div>
+                        <div class="item-text">
+                            <span class="item-title">Central Admin Console</span>
+                            <span class="item-email">admin@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="xavier-user-badge">
+                <div class="user-text-info">
+                    <div class="user-name-label" id="userNameLabel">Ayush Raj (Student)</div>
+                    <div class="user-dept-label" id="userDeptLabel">Computer Science</div>
+                </div>
+                <button type="button" class="btn-header-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="xavier-container">
+    <!-- Page Hero -->
+    <div class="xavier-page-hero">
+        <div>
+            <h2 class="xavier-page-title">Room & Venue Reservation</h2>
+            <p class="xavier-page-desc">Reserve lecture halls, science laboratories, and seminar halls across campus for academic and club events.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="schedule.html" class="btn-xavier-outline">
+                📅 View Campus Schedule
+            </a>
+            <button type="button" class="btn-xavier-outline" onclick="loadDashboard()">
+                🔄 Refresh Status
+            </button>
+        </div>
+    </div>
+
+    <!-- Alert Notifications -->
+    <div id="alertDanger" class="xavier-alert xavier-alert-danger" style="display: none;"></div>
+    <div id="alertSuccess" class="xavier-alert xavier-alert-success" style="display: none;"></div>
+
+    <!-- Stats Summary Strip -->
+    <div class="stats-grid stats-grid-3">
+        <div class="stat-card maroon">
+            <div class="stat-label">Total Reservations</div>
+            <div>
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-subtext">Cumulative campus booking requests</div>
+            </div>
+        </div>
+        <div class="stat-card green">
+            <div class="stat-label">Confirmed & Active</div>
+            <div>
+                <div class="stat-value" id="statApproved">0</div>
+                <div class="stat-subtext">Approved and room keys issued</div>
+            </div>
+        </div>
+        <div class="stat-card gold">
+            <div class="stat-label">Pending Reviews</div>
+            <div>
+                <div class="stat-value" id="statPending">0</div>
+                <div class="stat-subtext">Awaiting HOD or Admin clearance</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Layout Grid -->
+    <div class="layout-grid">
+        <!-- Room Request Form -->
+        <div class="xavier-card">
+            <div class="xavier-card-header">
+                <h3 class="xavier-card-title">Book a Campus Venue</h3>
+            </div>
+
+            <form id="bookingForm" onsubmit="handleBookingSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label" for="roomSelect">Select Room / Hall</label>
+                    <select id="roomSelect" name="roomId" class="form-select" required>
+                        <option value="">-- Choose a Room / Hall --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="dateInput">Reservation Date</label>
+                    <input type="date" id="dateInput" name="date" class="form-control" required>
+                </div>
+
+                <div class="time-row">
+                    <div class="form-group">
+                        <label class="form-label" for="startTime">Start Time</label>
+                        <select id="startTime" name="startTime" class="form-select" required onchange="validateTimeRange()">
+                            <option value="">-- Start --</option>
+                            <option value="07:00">07:00 AM</option>
+                            <option value="07:30">07:30 AM</option>
+                            <option value="08:00">08:00 AM</option>
+                            <option value="08:30">08:30 AM</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="09:30">09:30 AM</option>
+                            <option value="10:00" selected>10:00 AM</option>
+                            <option value="10:30">10:30 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="11:30">11:30 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="12:30">12:30 PM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="13:30">01:30 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="14:30">02:30 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="15:30">03:30 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                            <option value="16:30">04:30 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                            <option value="17:30">05:30 PM</option>
+                            <option value="18:00">06:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="endTime">End Time</label>
+                        <select id="endTime" name="endTime" class="form-select" required onchange="validateTimeRange()">
+                            <option value="">-- End --</option>
+                            <option value="07:30">07:30 AM</option>
+                            <option value="08:00">08:00 AM</option>
+                            <option value="08:30">08:30 AM</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="09:30">09:30 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="10:30">10:30 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="11:30">11:30 AM</option>
+                            <option value="12:00" selected>12:00 PM</option>
+                            <option value="12:30">12:30 PM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="13:30">01:30 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="14:30">02:30 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="15:30">03:30 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                            <option value="16:30">04:30 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                            <option value="17:30">05:30 PM</option>
+                            <option value="18:00">06:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="purposeInput">Purpose of Reservation</label>
+                    <textarea id="purposeInput" name="purpose" class="form-control" rows="3" placeholder="State event name, club, or academic activity details..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center;">
+                    Submit Reservation Request
+                </button>
+            </form>
+        </div>
+
+        <!-- My Bookings List -->
+        <div class="xavier-card">
+            <div class="xavier-card-header">
+                <h3 class="xavier-card-title">My Reservation History</h3>
+                <span class="status-pill status-hod" id="historyCountBadge">0 TOTAL</span>
+            </div>
+
+            <div id="emptyHistory" class="empty-state" style="display: none;">
+                <p>No reservations requested yet. Submit a request using the form on the left.</p>
+            </div>
+
+            <div id="tableWrap" class="table-responsive">
+                <table class="xavier-table">
+                    <thead>
+                    <tr>
+                        <th>Venue</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Purpose</th>
+                        <th style="text-align: right;">Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                    <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="js/xavier-store.js"></script>
+<script>
+    function toggleDropdown(btn) {
+        const dropdown = btn.closest('.role-switch-dropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.role-switch-dropdown')) {
+            document.querySelectorAll('.role-switch-dropdown').forEach(d => d.classList.remove('active'));
+        }
+    });
+
+    function switchPortal(role) {
+        window.XavierStore.switchRole(role);
+    }
+
+    function handleLogout() {
+        window.XavierStore.logout();
+        window.location.href = 'index.html';
+    }
+
+    function validateTimeRange() {
+        const start = document.getElementById("startTime").value;
+        const end = document.getElementById("endTime").value;
+        const endSelect = document.getElementById("endTime");
+        
+        if (start && end && start >= end) {
+            endSelect.setCustomValidity("End time must be later than start time");
+        } else {
+            endSelect.setCustomValidity("");
+        }
+    }
+
+    function showBanner(type, message) {
+        const danger = document.getElementById('alertDanger');
+        const success = document.getElementById('alertSuccess');
+        danger.style.display = 'none';
+        success.style.display = 'none';
+
+        if (type === 'danger') {
+            danger.innerHTML = message;
+            danger.style.display = 'block';
+            danger.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else if (type === 'success') {
+            success.innerHTML = message;
+            success.style.display = 'block';
+            success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    function populateRoomDropdown() {
+        const select = document.getElementById('roomSelect');
+        select.innerHTML = '<option value="">-- Choose a Room / Hall --</option>';
+
+        const rooms = window.XavierStore.getRooms();
+
+        const specialGroup = document.createElement('optgroup');
+        specialGroup.label = '🔬 Specialized Rooms & Labs';
+
+        const lrsGroup = document.createElement('optgroup');
+        lrsGroup.label = '📚 Lecture Rooms (Lrs 1 - 50)';
+
+        const crsGroup = document.createElement('optgroup');
+        crsGroup.label = '🏫 Classrooms (Crs 1 - 40)';
+
+        rooms.forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = r.id;
+            if (r.building === 'Lrs Block') {
+                opt.textContent = `${r.name} (Cap: ${r.capacity})`;
+                lrsGroup.appendChild(opt);
+            } else if (r.building === 'Crs Block') {
+                opt.textContent = `${r.name} (Cap: ${r.capacity})`;
+                crsGroup.appendChild(opt);
+            } else {
+                opt.textContent = `${r.name} (${r.building} - Cap: ${r.capacity})`;
+                specialGroup.appendChild(opt);
+            }
+        });
+
+        select.appendChild(specialGroup);
+        select.appendChild(lrsGroup);
+        select.appendChild(crsGroup);
+    }
+
+    function loadDashboard() {
+        const user = window.XavierStore.getCurrentUser();
+        document.getElementById('userNameLabel').textContent = user.name;
+        document.getElementById('userDeptLabel').textContent = user.department || 'Undergraduate';
+
+        const myBookings = window.XavierStore.getBookingsForUser(user.id);
+
+        const approved = myBookings.filter(b => b.status === 'APPROVED').length;
+        const pending = myBookings.filter(b => b.status === 'PENDING' || b.status === 'HOD_APPROVED').length;
+
+        document.getElementById('statTotal').textContent = myBookings.length;
+        document.getElementById('statApproved').textContent = approved;
+        document.getElementById('statPending').textContent = pending;
+        document.getElementById('historyCountBadge').textContent = `${myBookings.length} TOTAL`;
+
+        const tbody = document.getElementById('historyTableBody');
+        tbody.innerHTML = '';
+
+        if (myBookings.length === 0) {
+            document.getElementById('emptyHistory').style.display = 'block';
+            document.getElementById('tableWrap').style.display = 'none';
+        } else {
+            document.getElementById('emptyHistory').style.display = 'none';
+            document.getElementById('tableWrap').style.display = 'block';
+
+            myBookings.forEach(b => {
+                const tr = document.createElement('tr');
+
+                let badgeHtml = '';
+                if (b.status === 'PENDING') {
+                    badgeHtml = '<span class="status-pill status-pending">Pending HOD</span>';
+                } else if (b.status === 'HOD_APPROVED') {
+                    badgeHtml = '<span class="status-pill status-hod">HOD Approved</span>';
+                } else if (b.status === 'APPROVED') {
+                    badgeHtml = '<span class="status-pill status-approved">Approved</span>';
+                } else if (b.status === 'REJECTED') {
+                    badgeHtml = '<span class="status-pill status-rejected">Rejected</span>';
+                }
+
+                let cancelBtn = '';
+                if (b.status === 'PENDING') {
+                    cancelBtn = `<button class="btn-action-sm btn-delete-sm" onclick="handleCancel(${b.id})" title="Cancel Request">✕</button>`;
+                }
+
+                tr.innerHTML = `
+                    <td>
+                        <div style="font-weight: 600;">${b.room.name}</div>
+                        <div style="font-size: 0.76rem; color: var(--text-muted);">${b.room.building}</div>
+                    </td>
+                    <td style="font-weight: 600;">${b.date}</td>
+                    <td style="font-size: 0.82rem;">${b.startTime} - ${b.endTime}</td>
+                    <td style="max-width: 180px; font-size: 0.84rem;">${b.purpose}</td>
+                    <td style="text-align: right;">${badgeHtml}</td>
+                    <td style="text-align: center;">${cancelBtn}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    }
+
+    function handleBookingSubmit(e) {
+        e.preventDefault();
+        const roomId = document.getElementById('roomSelect').value;
+        const date = document.getElementById('dateInput').value;
+        const startTime = document.getElementById('startTime').value;
+        const endTime = document.getElementById('endTime').value;
+        const purpose = document.getElementById('purposeInput').value;
+
+        try {
+            const newBooking = window.XavierStore.createBooking({
+                roomId,
+                date,
+                startTime,
+                endTime,
+                purpose
+            });
+
+            showBanner('success', `✓ Reservation request for <strong>${newBooking.room.name}</strong> submitted successfully! It is now awaiting HOD departmental endorsement.`);
+            document.getElementById('purposeInput').value = '';
+            loadDashboard();
+        } catch (err) {
+            showBanner('danger', `⚠️ ${err.message}`);
+        }
+    }
+
+    function handleCancel(bookingId) {
+        if (confirm('Are you sure you want to cancel this pending reservation request?')) {
+            window.XavierStore.cancelBooking(bookingId);
+            showBanner('success', '✓ Reservation request cancelled.');
+            loadDashboard();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set default date to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const yyyy = tomorrow.getFullYear();
+        const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+        const dd = String(tomorrow.getDate()).padStart(2, '0');
+        const formatted = `${yyyy}-${mm}-${dd}`;
+
+        const dateInput = document.getElementById('dateInput');
+        dateInput.value = formatted;
+        dateInput.min = formatted;
+
+        populateRoomDropdown();
+        loadDashboard();
+    });
+</script>
+
+</body>
+</html>

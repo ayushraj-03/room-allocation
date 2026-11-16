@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Portal | St. Xavier's College (Autonomous), Mumbai</title>
+    <link rel="icon" type="image/png" href="images/xavier-logo.png">
+    <link rel="stylesheet" href="css/xavier-theme.css">
+    <style>
+        .btn-action-group {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .btn-approve-sm {
+            padding: 5px 12px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-approve-sm:hover {
+            background: #15803d;
+            color: #ffffff;
+        }
+        .btn-reject-sm {
+            padding: 5px 12px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-reject-sm:hover {
+            background: #b91c1c;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Institutional Strip -->
+<div class="xavier-top-strip">
+    <div>
+        <a href="https://xaviers.edu" target="_blank" rel="noopener">xaviers.edu</a>
+        <a href="#">NIRF</a>
+        <a href="#">IQAC</a>
+    </div>
+    <div style="font-weight: 600; letter-spacing: 0.04em;">
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+    </div>
+</div>
+
+<!-- Header -->
+<header class="xavier-header">
+    <div class="xavier-header-inner">
+        <div class="xavier-brand">
+            <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="xavier-crest-emblem">
+            <div class="xavier-title-group">
+                <h1>ST. XAVIER'S COLLEGE, MUMBAI <span class="xavier-role-badge-tag">HOD PORTAL</span></h1>
+                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+            </div>
+        </div>
+
+        <!-- Role Switcher & User Controls -->
+        <div class="xavier-switch-menu">
+            <div class="role-switch-dropdown">
+                <button type="button" class="btn-switch-portal" onclick="toggleDropdown(this)">
+                    <span>⇄ Switch Portal</span>
+                    <span class="chevron-icon">▾</span>
+                </button>
+                <div class="role-dropdown-content">
+                    <div class="role-dropdown-header">St. Xavier's Portals</div>
+                    <a href="student.html" onclick="switchPortal('STUDENT')" class="role-dropdown-item">
+                        <div class="item-icon icon-student">🎓</div>
+                        <div class="item-text">
+                            <span class="item-title">Student Portal</span>
+                            <span class="item-email">student@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a href="hod.html" class="role-dropdown-item" style="background-color: #fcf8f2;">
+                        <div class="item-icon icon-hod">🧑‍🏫</div>
+                        <div class="item-text">
+                            <span class="item-title" style="color: var(--xavier-maroon);">Faculty / HOD Portal</span>
+                            <span class="item-email">hod@test.com (Current)</span>
+                        </div>
+                        <span class="item-arrow" style="color: var(--xavier-maroon);">✓</span>
+                    </a>
+                    <a href="admin.html" onclick="switchPortal('ADMIN')" class="role-dropdown-item">
+                        <div class="item-icon icon-admin">🔑</div>
+                        <div class="item-text">
+                            <span class="item-title">Central Admin Console</span>
+                            <span class="item-email">admin@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="xavier-user-badge">
+                <div class="user-text-info">
+                    <div class="user-name-label" id="hodNameLabel">Dr. K. Fernandes (HOD)</div>
+                    <div class="user-dept-label" id="hodDeptLabel">Computer Science</div>
+                </div>
+                <button type="button" class="btn-header-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="xavier-container">
+    <!-- Page Hero -->
+    <div class="xavier-page-hero">
+        <div>
+            <h2 class="xavier-page-title">Department Review & Recommendations</h2>
+            <p class="xavier-page-desc" id="heroDesc">Reviewing student venue reservation requests for the Department of Computer Science.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="schedule.html" class="btn-xavier-outline">
+                📅 View Campus Schedule
+            </a>
+            <button type="button" class="btn-xavier-outline" onclick="loadHodDashboard()">
+                🔄 Refresh Queue
+            </button>
+        </div>
+    </div>
+
+    <!-- Alert Notifications -->
+    <div id="alertDanger" class="xavier-alert xavier-alert-danger" style="display: none;"></div>
+    <div id="alertSuccess" class="xavier-alert xavier-alert-success" style="display: none;"></div>
+
+    <!-- Stats Summary Cards -->
+    <div class="stats-grid stats-grid-3">
+        <div class="stat-card maroon">
+            <div class="stat-label">Academic Department</div>
+            <div>
+                <div class="stat-value-text" id="statDept">Computer Science</div>
+                <div class="stat-subtext">Department Review Desk</div>
+            </div>
+        </div>
+        <div class="stat-card gold">
+            <div class="stat-label">Pending Reviews</div>
+            <div>
+                <div class="stat-value" id="statPendingCount">0</div>
+                <div class="stat-subtext">Awaiting HOD endorsement</div>
+            </div>
+        </div>
+        <div class="stat-card blue">
+            <div class="stat-label">Approval Pipeline</div>
+            <div>
+                <div class="stat-value-text">Central Admin Clearance</div>
+                <div class="stat-subtext">Forwards for room key release</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Table Card -->
+    <div class="xavier-card">
+        <div class="xavier-card-header">
+            <h3 class="xavier-card-title">Pending Department Requests</h3>
+            <span class="status-pill status-pending" id="awaitingBadge">0 AWAITING</span>
+        </div>
+
+        <div id="emptyQueue" class="empty-state" style="display: none;">
+            <p>There are currently no pending reservation requests for your department.</p>
+        </div>
+
+        <div id="tableWrap" class="table-responsive">
+            <table class="xavier-table">
+                <thead>
+                <tr>
+                    <th>Requested Venue</th>
+                    <th>Student Name</th>
+                    <th>Date</th>
+                    <th>Time Slot</th>
+                    <th>Purpose / Event Details</th>
+                    <th style="text-align: right;">Department Action</th>
+                </tr>
+                </thead>
+                <tbody id="pendingTableBody">
+                <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script src="js/xavier-store.js"></script>
+<script>
+    function toggleDropdown(btn) {
+        const dropdown = btn.closest('.role-switch-dropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.role-switch-dropdown')) {
+            document.querySelectorAll('.role-switch-dropdown').forEach(d => d.classList.remove('active'));
+        }
+    });
+
+    function switchPortal(role) {
+        window.XavierStore.switchRole(role);
+    }
+
+    function handleLogout() {
+        window.XavierStore.logout();
+        window.location.href = 'index.html';
+    }
+
+    function showBanner(type, message) {
+        const danger = document.getElementById('alertDanger');
+        const success = document.getElementById('alertSuccess');
+        danger.style.display = 'none';
+        success.style.display = 'none';
+
+        if (type === 'danger') {
+            danger.innerHTML = message;
+            danger.style.display = 'block';
+            danger.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else if (type === 'success') {
+            success.innerHTML = message;
+            success.style.display = 'block';
+            success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    function loadHodDashboard() {
+        // Ensure user is HOD
+        const user = window.XavierStore.getCurrentUser();
+        const hod = (user && user.role === 'HOD') ? user : window.XavierStore.switchRole('HOD');
+
+        document.getElementById('hodNameLabel').textContent = hod.name;
+        document.getElementById('hodDeptLabel').textContent = hod.department;
+        document.getElementById('heroDesc').textContent = `Reviewing student venue reservation requests for the Department of ${hod.department}.`;
+        document.getElementById('statDept').textContent = hod.department;
+
+        const pending = window.XavierStore.getPendingForDepartment(hod.department);
+
+        document.getElementById('statPendingCount').textContent = pending.length;
+        document.getElementById('awaitingBadge').textContent = `${pending.length} AWAITING`;
+
+        const tbody = document.getElementById('pendingTableBody');
+        tbody.innerHTML = '';
+
+        if (pending.length === 0) {
+            document.getElementById('emptyQueue').style.display = 'block';
+            document.getElementById('tableWrap').style.display = 'none';
+        } else {
+            document.getElementById('emptyQueue').style.display = 'none';
+            document.getElementById('tableWrap').style.display = 'block';
+
+            pending.forEach(b => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div style="font-weight: 600;">${b.room.name}</div>
+                        <div style="font-size: 0.76rem; color: var(--text-muted);">${b.room.building} (Cap: ${b.room.capacity})</div>
+                    </td>
+                    <td>
+                        <div style="font-weight: 600;">${b.user.name}</div>
+                        <div style="font-size: 0.76rem; color: var(--text-muted);">${b.user.email}</div>
+                    </td>
+                    <td style="font-weight: 600;">${b.date}</td>
+                    <td style="font-size: 0.82rem;">${b.startTime} - ${b.endTime}</td>
+                    <td style="max-width: 200px; font-size: 0.84rem;">${b.purpose}</td>
+                    <td style="text-align: right;">
+                        <div class="btn-action-group">
+                            <button type="button" class="btn-approve-sm" onclick="approveRequest(${b.id})">✓ Endorse / Approve</button>
+                            <button type="button" class="btn-reject-sm" onclick="rejectRequest(${b.id})">✕ Reject</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    }
+
+    function approveRequest(bookingId) {
+        try {
+            const b = window.XavierStore.hodApprove(bookingId);
+            showBanner('success', `✓ Request for <strong>${b.room.name}</strong> endorsed successfully! It has been recommended and forwarded to Central Administration for final venue allotment.`);
+            loadHodDashboard();
+        } catch (err) {
+            showBanner('danger', `⚠️ ${err.message}`);
+        }
+    }
+
+    function rejectRequest(bookingId) {
+        if (confirm('Decline this student reservation request?')) {
+            try {
+                window.XavierStore.hodReject(bookingId);
+                showBanner('danger', '✕ Reservation request has been declined.');
+                loadHodDashboard();
+            } catch (err) {
+                showBanner('danger', `⚠️ ${err.message}`);
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadHodDashboard);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/student", "destination": "/student.html" },
+    { "source": "/student/dashboard", "destination": "/student.html" },
+    { "source": "/hod", "destination": "/hod.html" },
+    { "source": "/hod/dashboard", "destination": "/hod.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/admin/dashboard", "destination": "/admin.html" },
+    { "source": "/schedule", "destination": "/schedule.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    }
+  ]
+}

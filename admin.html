@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central Administration | St. Xavier's College (Autonomous), Mumbai</title>
+    <link rel="icon" type="image/png" href="images/xavier-logo.png">
+    <link rel="stylesheet" href="css/xavier-theme.css">
+    <style>
+        .admin-layout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 990px) {
+            .admin-layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .btn-action-sm {
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.76rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.15s;
+        }
+        .btn-edit-sm {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #1d4ed8;
+        }
+        .btn-edit-sm:hover {
+            background: #2563eb;
+            color: #fff;
+        }
+        .btn-delete-sm {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #b91c1c;
+        }
+        .btn-delete-sm:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+        .edit-overlay-section {
+            background: #fdfbf7;
+            border: 1px solid var(--xavier-gold);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Institutional Strip -->
+<div class="xavier-top-strip">
+    <div>
+        <a href="https://xaviers.edu" target="_blank" rel="noopener">xaviers.edu</a>
+        <a href="#">NIRF</a>
+        <a href="#">IQAC</a>
+    </div>
+    <div style="font-weight: 600; letter-spacing: 0.04em;">
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+    </div>
+</div>
+
+<!-- Header -->
+<header class="xavier-header">
+    <div class="xavier-header-inner">
+        <div class="xavier-brand">
+            <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="xavier-crest-emblem">
+            <div class="xavier-title-group">
+                <h1>ST. XAVIER'S COLLEGE, MUMBAI <span class="xavier-role-badge-tag">ADMIN CONSOLE</span></h1>
+                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+            </div>
+        </div>
+
+        <!-- Role Switcher & User Controls -->
+        <div class="xavier-switch-menu">
+            <div class="role-switch-dropdown">
+                <button type="button" class="btn-switch-portal" onclick="toggleDropdown(this)">
+                    <span>⇄ Switch Portal</span>
+                    <span class="chevron-icon">▾</span>
+                </button>
+                <div class="role-dropdown-content">
+                    <div class="role-dropdown-header">St. Xavier's Portals</div>
+                    <a href="student.html" onclick="switchPortal('STUDENT')" class="role-dropdown-item">
+                        <div class="item-icon icon-student">🎓</div>
+                        <div class="item-text">
+                            <span class="item-title">Student Portal</span>
+                            <span class="item-email">student@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a href="hod.html" onclick="switchPortal('HOD')" class="role-dropdown-item">
+                        <div class="item-icon icon-hod">🧑‍🏫</div>
+                        <div class="item-text">
+                            <span class="item-title">Faculty / HOD Portal</span>
+                            <span class="item-email">hod@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a href="admin.html" class="role-dropdown-item" style="background-color: #fcf8f2;">
+                        <div class="item-icon icon-admin">🔑</div>
+                        <div class="item-text">
+                            <span class="item-title" style="color: var(--xavier-maroon);">Central Admin Console</span>
+                            <span class="item-email">admin@test.com (Current)</span>
+                        </div>
+                        <span class="item-arrow" style="color: var(--xavier-maroon);">✓</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="xavier-user-badge">
+                <div class="user-text-info">
+                    <div class="user-name-label">Campus Administration</div>
+                    <div class="user-dept-label">Registry / Facilities</div>
+                </div>
+                <button type="button" class="btn-header-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="xavier-container">
+    <!-- Page Hero -->
+    <div class="xavier-page-hero">
+        <div>
+            <h2 class="xavier-page-title">Master Allocation & Venue Control</h2>
+            <p class="xavier-page-desc">Finalize departmental booking recommendations and manage campus lecture halls, classrooms, and laboratories.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="schedule.html" class="btn-xavier-outline">
+                📅 View Schedule
+            </a>
+            <button type="button" class="btn-xavier-outline" onclick="loadAdminDashboard()">
+                🔄 Refresh Console
+            </button>
+            <button type="button" class="btn-xavier-outline" onclick="resetDemo()">
+                ⚡ Reset Demo Data
+            </button>
+        </div>
+    </div>
+
+    <!-- Alert Notifications -->
+    <div id="alertDanger" class="xavier-alert xavier-alert-danger" style="display: none;"></div>
+    <div id="alertSuccess" class="xavier-alert xavier-alert-success" style="display: none;"></div>
+
+    <!-- Stats Summary Grid -->
+    <div class="stats-grid">
+        <div class="stat-card gold">
+            <div class="stat-label">Awaiting Confirmation</div>
+            <div class="stat-value" id="statAwaiting">0</div>
+            <div class="stat-subtext">HOD-endorsed queue</div>
+        </div>
+        <div class="stat-card maroon">
+            <div class="stat-label">Total Campus Venues</div>
+            <div class="stat-value" id="statTotalRooms">0</div>
+            <div class="stat-subtext">Classrooms, halls & labs</div>
+        </div>
+        <div class="stat-card green">
+            <div class="stat-label">Approved Reservations</div>
+            <div class="stat-value" id="statApproved">0</div>
+            <div class="stat-subtext">Keys released & confirmed</div>
+        </div>
+        <div class="stat-card red">
+            <div class="stat-label">Declined Requests</div>
+            <div class="stat-value" id="statRejected">0</div>
+            <div class="stat-subtext">Conflicts or rejected</div>
+        </div>
+        <div class="stat-card blue">
+            <div class="stat-label">Total Booking Logs</div>
+            <div class="stat-value" id="statTotalBookings">0</div>
+            <div class="stat-subtext">Cumulative reservations</div>
+        </div>
+    </div>
+
+    <!-- Main Admin Layout Grid -->
+    <div class="admin-layout-grid">
+        <div>
+            <!-- Awaiting Final Approval (HOD Approved) -->
+            <div class="xavier-card">
+                <div class="xavier-card-header">
+                    <h3 class="xavier-card-title">Final Authorization Queue (HOD Approved)</h3>
+                    <span class="status-pill status-hod" id="readyCountBadge">0 READY</span>
+                </div>
+
+                <div id="emptyApprovals" class="empty-state" style="display: none;">
+                    <p>No reservations currently awaiting administrative confirmation.</p>
+                </div>
+
+                <div id="approvalsTableWrap" class="table-responsive">
+                    <table class="xavier-table">
+                        <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Dept</th>
+                            <th>Venue</th>
+                            <th>Date</th>
+                            <th>Time Window</th>
+                            <th style="text-align: right;">Authorization</th>
+                        </tr>
+                        </thead>
+                        <tbody id="approvalsTableBody">
+                        <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Campus Venues Directory & Management -->
+            <div class="xavier-card">
+                <div class="xavier-card-header">
+                    <h3 class="xavier-card-title">Campus Venues Directory</h3>
+                    <span class="status-pill status-approved" id="venuesCountBadge">0 VENUES</span>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="xavier-tabs">
+                    <button type="button" class="xavier-tab-btn active" onclick="filterRooms('labs', this)">Labs & Seminars</button>
+                    <button type="button" class="xavier-tab-btn" onclick="filterRooms('lrs', this)">Lecture Rooms (Lrs)</button>
+                    <button type="button" class="xavier-tab-btn" onclick="filterRooms('crs', this)">Classrooms (Crs)</button>
+                    <button type="button" class="xavier-tab-btn" onclick="filterRooms('all', this)">All Venues</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="xavier-table">
+                        <thead>
+                        <tr>
+                            <th>Venue Name</th>
+                            <th>Campus Building / Block</th>
+                            <th>Capacity</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="roomsTableBody">
+                        <!-- Dynamic Room Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Edit Room Inline Section -->
+            <div id="editRoomSection" class="edit-overlay-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <h4 style="color: var(--xavier-maroon); font-family: serif; font-size: 1.15rem;">Edit Venue Specifications</h4>
+                    <button type="button" class="btn-xavier-outline" onclick="cancelEditRoom()" style="padding: 3px 8px; font-size: 0.76rem;">✕ Cancel</button>
+                </div>
+                <form id="editRoomForm" onsubmit="handleSaveEditRoom(event)" style="display: grid; grid-template-columns: 1fr 1fr 100px auto; gap: 12px; align-items: flex-end;">
+                    <input type="hidden" id="editRoomId">
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label" for="editRoomName">Venue Name</label>
+                        <input type="text" id="editRoomName" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label" for="editRoomBuilding">Building</label>
+                        <input type="text" id="editRoomBuilding" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label" for="editRoomCapacity">Capacity</label>
+                        <input type="number" id="editRoomCapacity" class="form-control" required min="5">
+                    </div>
+                    <button type="submit" class="btn-xavier-primary" style="padding: 9px 16px;">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sidebar: Add Room Form -->
+        <div>
+            <div class="xavier-card">
+                <div class="xavier-card-header">
+                    <h3 class="xavier-card-title">Register New Venue</h3>
+                </div>
+
+                <form id="addRoomForm" onsubmit="handleAddRoom(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="addRoomName">Venue Name</label>
+                        <input type="text" id="addRoomName" class="form-control" placeholder="e.g. Lrs 51, Physics Lab 2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="addRoomBuilding">Campus Block / Building</label>
+                        <select id="addRoomBuilding" class="form-select" required>
+                            <option value="Main Block">Main Block</option>
+                            <option value="Lrs Block">Lrs Block (Lecture Halls)</option>
+                            <option value="Crs Block">Crs Block (Classrooms)</option>
+                            <option value="Science Block">Science Block</option>
+                            <option value="Library Block">Library Block</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="addRoomCapacity">Seating Capacity</label>
+                        <input type="number" id="addRoomCapacity" class="form-control" placeholder="e.g. 60" required min="5">
+                    </div>
+
+                    <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center;">
+                        + Register Venue
+                    </button>
+                </form>
+            </div>
+
+            <!-- Quick Guidelines Card -->
+            <div class="xavier-card" style="margin-top: 20px;">
+                <div class="xavier-card-header">
+                    <h3 class="xavier-card-title">Institutional Guidelines</h3>
+                </div>
+                <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;">
+                    <p style="margin-bottom: 8px;">• Central Administration has the final authority to sanction or decline venue requisitions endorsed by HODs.</p>
+                    <p style="margin-bottom: 8px;">• Approved requisitions instantly publish to the live campus timetable.</p>
+                    <p>• Room keys and AV equipment permits are issued only upon status <strong>APPROVED</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="js/xavier-store.js"></script>
+<script>
+    let activeFilter = 'labs';
+
+    function toggleDropdown(btn) {
+        const dropdown = btn.closest('.role-switch-dropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.role-switch-dropdown')) {
+            document.querySelectorAll('.role-switch-dropdown').forEach(d => d.classList.remove('active'));
+        }
+    });
+
+    function switchPortal(role) {
+        window.XavierStore.switchRole(role);
+    }
+
+    function handleLogout() {
+        window.XavierStore.logout();
+        window.location.href = 'index.html';
+    }
+
+    function showBanner(type, message) {
+        const danger = document.getElementById('alertDanger');
+        const success = document.getElementById('alertSuccess');
+        danger.style.display = 'none';
+        success.style.display = 'none';
+
+        if (type === 'danger') {
+            danger.innerHTML = message;
+            danger.style.display = 'block';
+            danger.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else if (type === 'success') {
+            success.innerHTML = message;
+            success.style.display = 'block';
+            success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    function resetDemo() {
+        if (confirm('Reset all rooms, bookings, and users back to clean default demo data?')) {
+            window.XavierStore.resetDemoData();
+            showBanner('success', '✓ Demo data reset to pristine state.');
+            loadAdminDashboard();
+        }
+    }
+
+    function loadAdminDashboard() {
+        // Ensure role is ADMIN
+        const user = window.XavierStore.getCurrentUser();
+        if (!user || user.role !== 'ADMIN') {
+            window.XavierStore.switchRole('ADMIN');
+        }
+
+        const stats = window.XavierStore.getStats();
+        document.getElementById('statAwaiting').textContent = stats.pendingAdmin;
+        document.getElementById('statTotalRooms').textContent = stats.totalRooms;
+        document.getElementById('statApproved').textContent = stats.approved;
+        document.getElementById('statRejected').textContent = stats.rejected;
+        document.getElementById('statTotalBookings').textContent = stats.totalBookings;
+
+        document.getElementById('readyCountBadge').textContent = `${stats.pendingAdmin} READY`;
+        document.getElementById('venuesCountBadge').textContent = `${stats.totalRooms} VENUES`;
+
+        // Load Awaiting Final Approvals
+        const awaiting = window.XavierStore.getAwaitingAdmin();
+        const appTbody = document.getElementById('approvalsTableBody');
+        appTbody.innerHTML = '';
+
+        if (awaiting.length === 0) {
+            document.getElementById('emptyApprovals').style.display = 'block';
+            document.getElementById('approvalsTableWrap').style.display = 'none';
+        } else {
+            document.getElementById('emptyApprovals').style.display = 'none';
+            document.getElementById('approvalsTableWrap').style.display = 'block';
+
+            awaiting.forEach(b => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div style="font-weight: 600;">${b.user.name}</div>
+                        <div style="font-size: 0.74rem; color: var(--text-muted);">${b.user.email}</div>
+                    </td>
+                    <td>${b.user.department || 'N/A'}</td>
+                    <td>
+                        <div style="font-weight: 600;">${b.room.name}</div>
+                        <div style="font-size: 0.74rem; color: var(--text-muted);">${b.room.building}</div>
+                    </td>
+                    <td style="font-weight: 600;">${b.date}</td>
+                    <td style="font-size: 0.82rem;">${b.startTime} - ${b.endTime}</td>
+                    <td style="text-align: right; white-space: nowrap;">
+                        <button type="button" class="btn-xavier-approve" onclick="finalizeBooking(${b.id})" style="margin-right: 4px;">✓ Finalize</button>
+                        <button type="button" class="btn-xavier-reject" onclick="declineBooking(${b.id})">✕ Decline</button>
+                    </td>
+                `;
+                appTbody.appendChild(tr);
+            });
+        }
+
+        renderRoomsTable();
+    }
+
+    function filterRooms(category, btn) {
+        activeFilter = category;
+        document.querySelectorAll('.xavier-tab-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        renderRoomsTable();
+    }
+
+    function renderRoomsTable() {
+        const rooms = window.XavierStore.getRooms();
+        const tbody = document.getElementById('roomsTableBody');
+        tbody.innerHTML = '';
+
+        let filtered = rooms;
+        if (activeFilter === 'labs') {
+            filtered = rooms.filter(r => r.building !== 'Lrs Block' && r.building !== 'Crs Block');
+        } else if (activeFilter === 'lrs') {
+            filtered = rooms.filter(r => r.building === 'Lrs Block');
+        } else if (activeFilter === 'crs') {
+            filtered = rooms.filter(r => r.building === 'Crs Block');
+        }
+
+        filtered.forEach(r => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-weight: 600;">${r.name}</td>
+                <td>${r.building}</td>
+                <td><span style="font-weight: 600;">${r.capacity}</span> seats</td>
+                <td style="text-align: right; white-space: nowrap;">
+                    <button class="btn-action-sm btn-edit-sm" onclick="startEditRoom(${r.id}, '${escapeQuotes(r.name)}', '${escapeQuotes(r.building)}', ${r.capacity})">Edit</button>
+                    <button class="btn-action-sm btn-delete-sm" onclick="handleDeleteRoom(${r.id}, '${escapeQuotes(r.name)}')">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function escapeQuotes(str) {
+        return (str || '').replace(/'/g, "\\'");
+    }
+
+    function finalizeBooking(bookingId) {
+        try {
+            const b = window.XavierStore.adminApprove(bookingId);
+            showBanner('success', `✓ Reservation for <strong>${b.room.name}</strong> confirmed and finalized. Room key release authorized.`);
+            loadAdminDashboard();
+        } catch (err) {
+            showBanner('danger', `⚠️ ${err.message}`);
+        }
+    }
+
+    function declineBooking(bookingId) {
+        if (confirm('Decline this reservation request?')) {
+            try {
+                window.XavierStore.adminReject(bookingId);
+                showBanner('danger', '✕ Reservation request declined.');
+                loadAdminDashboard();
+            } catch (err) {
+                showBanner('danger', `⚠️ ${err.message}`);
+            }
+        }
+    }
+
+    function handleAddRoom(e) {
+        e.preventDefault();
+        const name = document.getElementById('addRoomName').value;
+        const building = document.getElementById('addRoomBuilding').value;
+        const capacity = document.getElementById('addRoomCapacity').value;
+
+        try {
+            const room = window.XavierStore.addRoom({ name, building, capacity });
+            showBanner('success', `✓ Venue <strong>${room.name}</strong> added to campus inventory successfully.`);
+            document.getElementById('addRoomName').value = '';
+            document.getElementById('addRoomCapacity').value = '';
+            loadAdminDashboard();
+        } catch (err) {
+            showBanner('danger', `⚠️ ${err.message}`);
+        }
+    }
+
+    function startEditRoom(id, name, building, capacity) {
+        document.getElementById('editRoomId').value = id;
+        document.getElementById('editRoomName').value = name;
+        document.getElementById('editRoomBuilding').value = building;
+        document.getElementById('editRoomCapacity').value = capacity;
+
+        const sec = document.getElementById('editRoomSection');
+        sec.style.display = 'block';
+        sec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function cancelEditRoom() {
+        document.getElementById('editRoomSection').style.display = 'none';
+    }
+
+    function handleSaveEditRoom(e) {
+        e.preventDefault();
+        const id = document.getElementById('editRoomId').value;
+        const name = document.getElementById('editRoomName').value;
+        const building = document.getElementById('editRoomBuilding').value;
+        const capacity = document.getElementById('editRoomCapacity').value;
+
+        try {
+            const room = window.XavierStore.editRoom(id, { name, building, capacity });
+            showBanner('success', `✓ Venue <strong>${room.name}</strong> specifications updated.`);
+            cancelEditRoom();
+            loadAdminDashboard();
+        } catch (err) {
+            showBanner('danger', `⚠️ ${err.message}`);
+        }
+    }
+
+    function handleDeleteRoom(id, name) {
+        if (confirm(`Are you sure you want to delete venue "${name}"? All associated reservations will also be removed.`)) {
+            try {
+                window.XavierStore.deleteRoom(id);
+                showBanner('success', `✓ Venue "${name}" deleted.`);
+                loadAdminDashboard();
+            } catch (err) {
+                showBanner('danger', `⚠️ ${err.message}`);
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAdminDashboard);
+</script>
+
+</body>
+</html>

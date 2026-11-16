@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | St. Xavier's College (Autonomous), Mumbai</title>
+    <link rel="icon" type="image/png" href="images/xavier-logo.png">
+    <link rel="stylesheet" href="css/xavier-theme.css">
+    <style>
+        body {
+            background-color: var(--xavier-cream);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 460px;
+            background: #ffffff;
+            border: 1px solid var(--border-warm);
+            border-top: 4px solid var(--xavier-maroon);
+            border-radius: var(--radius-md);
+            padding: 36px 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .auth-crest-wrap {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-crest-img {
+            width: 80px;
+            height: 98px;
+            margin: 0 auto 12px;
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.12));
+        }
+
+        .auth-college-title {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--xavier-maroon);
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+        }
+
+        .auth-tagline {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+        }
+
+        .auth-portal-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .role-selector-pills {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            background: #f7f4ec;
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .role-pill-btn {
+            flex: 1;
+            padding: 8px 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 3px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            transition: all 0.15s;
+        }
+
+        .role-pill-btn.active {
+            background: #ffffff;
+            color: var(--xavier-maroon);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .instant-demo-box {
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px dashed var(--border-warm);
+            text-align: center;
+        }
+
+        .instant-demo-label {
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .instant-btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .btn-instant {
+            padding: 7px 4px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            border: 1px solid var(--border-warm);
+            border-radius: var(--radius-sm);
+            background: #fdfbf7;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-instant:hover {
+            border-color: var(--xavier-maroon);
+            color: var(--xavier-maroon);
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(116, 17, 20, 0.08);
+        }
+
+        .auth-footer {
+            text-align: center;
+            padding: 18px 24px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-warm);
+            background: #f3ede2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Institutional Strip -->
+<div class="xavier-top-strip">
+    <div>
+        <a href="https://xaviers.edu" target="_blank" rel="noopener">xaviers.edu</a>
+        <a href="#">NIRF</a>
+        <a href="#">IQAC</a>
+    </div>
+    <div style="font-weight: 600; letter-spacing: 0.04em;">
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+    </div>
+</div>
+
+<!-- Header -->
+<header class="xavier-header">
+    <div class="xavier-header-inner" style="justify-content: center; text-align: center;">
+        <div class="xavier-brand" style="justify-content: center;">
+            <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="xavier-crest-emblem" style="width: 40px; height: 50px;">
+            <div>
+                <h1 style="font-size: 1.25rem;">ST. XAVIER'S COLLEGE, MUMBAI</h1>
+                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-crest-wrap">
+            <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="auth-crest-img">
+            <h2 class="auth-college-title">St. Xavier's College</h2>
+            <div class="auth-tagline">Empowered Autonomous Institute</div>
+            <div class="auth-portal-name">Portal Authentication Gateway</div>
+        </div>
+
+        <!-- Role Select Tabs -->
+        <div class="role-selector-pills">
+            <button type="button" class="role-pill-btn active" onclick="selectRole('STUDENT', 'student@test.com', this)">Student</button>
+            <button type="button" class="role-pill-btn" onclick="selectRole('HOD', 'hod@test.com', this)">Faculty / HOD</button>
+            <button type="button" class="role-pill-btn" onclick="selectRole('ADMIN', 'admin@test.com', this)">Administrator</button>
+        </div>
+
+        <!-- Notification Alert -->
+        <div id="alertBox" class="xavier-alert xavier-alert-danger" style="display: none; padding: 8px 12px; font-size: 0.82rem; margin-bottom: 16px;"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label class="form-label" for="username">College Email ID</label>
+                <input type="email" id="username" name="username" class="form-control" value="student@test.com" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" value="password123" required autocomplete="current-password">
+                <small style="color: var(--text-muted); font-size: 0.74rem; display: block; margin-top: 4px;">
+                    Demo password: <code>password123</code>
+                </small>
+            </div>
+
+            <button type="submit" class="btn-xavier-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+                Sign In to Account →
+            </button>
+        </form>
+
+        <!-- One-Click Instant Sign-In Shortcuts -->
+        <div class="instant-demo-box">
+            <div class="instant-demo-label">⚡ One-Click Instant Showcase Access</div>
+            <div class="instant-btn-group">
+                <button type="button" class="btn-instant" onclick="instantAccess('STUDENT')">🎓 Student</button>
+                <button type="button" class="btn-instant" onclick="instantAccess('HOD')">🧑‍🏫 HOD</button>
+                <button type="button" class="btn-instant" onclick="instantAccess('ADMIN')">🔑 Admin</button>
+            </div>
+            <div style="margin-top: 14px;">
+                <a href="schedule.html" style="color: var(--xavier-maroon); font-size: 0.82rem; font-weight: 600; text-decoration: none;">
+                    📅 Browse Public Campus Timetable & Room Availability →
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="auth-footer">
+    © 2026 St. Xavier's College (Autonomous), 5, Mahapalika Marg, Mumbai 400 001. All rights reserved.
+</footer>
+
+<script src="js/xavier-store.js"></script>
+<script>
+    let currentRole = 'STUDENT';
+
+    function selectRole(role, email, btn) {
+        currentRole = role;
+        document.querySelectorAll('.role-pill-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        document.getElementById('username').value = email;
+        document.getElementById('password').value = 'password123';
+        hideAlert();
+    }
+
+    function showAlert(msg) {
+        const box = document.getElementById('alertBox');
+        box.textContent = '⚠️ ' + msg;
+        box.style.display = 'block';
+    }
+
+    function hideAlert() {
+        document.getElementById('alertBox').style.display = 'none';
+    }
+
+    function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+
+        const res = window.XavierStore.login(email, pass);
+        if (!res.success) {
+            showAlert(res.message);
+            return;
+        }
+
+        routeToRole(res.user.role);
+    }
+
+    function instantAccess(role) {
+        const user = window.XavierStore.switchRole(role);
+        routeToRole(user.role);
+    }
+
+    function routeToRole(role) {
+        if (role === 'STUDENT') {
+            window.location.href = 'student.html';
+        } else if (role === 'HOD') {
+            window.location.href = 'hod.html';
+        } else if (role === 'ADMIN') {
+            window.location.href = 'admin.html';
+        } else {
+            window.location.href = 'student.html';
+        }
+    }
+</script>
+
+</body>
+</html>

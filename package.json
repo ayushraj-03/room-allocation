@@ -1,0 +1,21 @@
+{
+  "name": "room-allocation",
+  "version": "1.0.0",
+  "description": "St. Xavier's College (Autonomous), Mumbai - Institutional Room Allocation & Venue Scheduling Platform",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "start": "npx serve . -l 3000",
+    "build": "echo 'Build complete - static assets ready.'"
+  },
+  "keywords": [
+    "room-allocation",
+    "campus-scheduling",
+    "st-xaviers-college",
+    "spring-boot",
+    "supabase",
+    "timetable"
+  ],
+  "author": "Ayush Raj",
+  "license": "MIT"
+}

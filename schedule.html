@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Schedule | St. Xavier's College (Autonomous), Mumbai</title>
+    <link rel="icon" type="image/png" href="images/xavier-logo.png">
+    <link rel="stylesheet" href="css/xavier-theme.css">
+    <style>
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) auto;
+            gap: 16px;
+            align-items: flex-end;
+        }
+        @media (max-width: 768px) {
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Institutional Strip -->
+<div class="xavier-top-strip">
+    <div>
+        <a href="https://xaviers.edu" target="_blank" rel="noopener">xaviers.edu</a>
+        <a href="#">NIRF</a>
+        <a href="#">IQAC</a>
+    </div>
+    <div style="font-weight: 600; letter-spacing: 0.04em;">
+        ESTD. 1869 • EMPOWERED AUTONOMOUS INSTITUTE
+    </div>
+</div>
+
+<!-- Header -->
+<header class="xavier-header">
+    <div class="xavier-header-inner">
+        <div class="xavier-brand">
+            <img src="images/xavier-logo.png" alt="St. Xavier's College Crest" class="xavier-crest-emblem">
+            <div class="xavier-title-group">
+                <h1>ST. XAVIER'S COLLEGE, MUMBAI <span class="xavier-role-badge-tag">SCHEDULE VIEW</span></h1>
+                <div class="xavier-sub-title">Campus Room & Space Allocation System</div>
+            </div>
+        </div>
+
+        <!-- Role Switcher & User Controls -->
+        <div class="xavier-switch-menu">
+            <div class="role-switch-dropdown">
+                <button type="button" class="btn-switch-portal" onclick="toggleDropdown(this)">
+                    <span>⇄ Switch Portal</span>
+                    <span class="chevron-icon">▾</span>
+                </button>
+                <div class="role-dropdown-content">
+                    <div class="role-dropdown-header">St. Xavier's Portals</div>
+                    <a href="student.html" onclick="switchPortal('STUDENT')" class="role-dropdown-item">
+                        <div class="item-icon icon-student">🎓</div>
+                        <div class="item-text">
+                            <span class="item-title">Student Portal</span>
+                            <span class="item-email">student@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a href="hod.html" onclick="switchPortal('HOD')" class="role-dropdown-item">
+                        <div class="item-icon icon-hod">🧑‍🏫</div>
+                        <div class="item-text">
+                            <span class="item-title">Faculty / HOD Portal</span>
+                            <span class="item-email">hod@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a href="admin.html" onclick="switchPortal('ADMIN')" class="role-dropdown-item">
+                        <div class="item-icon icon-admin">🔑</div>
+                        <div class="item-text">
+                            <span class="item-title">Central Admin Console</span>
+                            <span class="item-email">admin@test.com</span>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                </div>
+            </div>
+
+            <button type="button" class="btn-header-logout" onclick="handleLogout()">Logout</button>
+        </div>
+    </div>
+</header>
+
+<main class="xavier-container">
+    <!-- Page Hero -->
+    <div class="xavier-page-hero">
+        <div>
+            <h2 class="xavier-page-title">Approved Room & Venue Schedule</h2>
+            <p class="xavier-page-desc">Official timetable of approved venue reservations across campus. Filter by venue, date, or academic department.</p>
+        </div>
+        <div>
+            <button type="button" class="btn-xavier-outline" onclick="goBackToPortal()">
+                ← Back to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <!-- Filter Panel -->
+    <div class="xavier-card" style="margin-bottom: 24px;">
+        <form class="filter-grid" onsubmit="handleFilterSubmit(event)">
+            <div class="form-group" style="margin: 0;">
+                <label class="form-label" for="filterRoom">Filter by Room / Hall</label>
+                <select id="filterRoom" class="form-select">
+                    <option value="">All Venues</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin: 0;">
+                <label class="form-label" for="filterDate">Filter by Date</label>
+                <input type="date" id="filterDate" class="form-control">
+            </div>
+
+            <div class="form-group" style="margin: 0;">
+                <label class="form-label" for="filterDept">Filter by Department</label>
+                <select id="filterDept" class="form-select">
+                    <option value="">All Academic Departments</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Life Sciences">Life Sciences</option>
+                    <option value="Arts & Humanities">Arts & Humanities</option>
+                    <option value="Administration">Administration</option>
+                </select>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button type="submit" class="btn-xavier-primary">Apply Filters</button>
+                <button type="button" class="btn-xavier-outline" onclick="resetFilters()">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Schedule Table Card -->
+    <div class="xavier-card">
+        <div class="xavier-card-header">
+            <h3 class="xavier-card-title">Confirmed Campus Allocations</h3>
+            <span class="status-pill status-approved" id="approvedCountBadge">0 APPROVED</span>
+        </div>
+
+        <div class="table-responsive">
+            <div id="emptySchedule" class="empty-state" style="display: none;">
+                <div style="font-size: 2.5rem; margin-bottom: 12px;">📅</div>
+                <p>No approved reservations match the selected filter criteria.</p>
+            </div>
+
+            <table id="scheduleTable" class="xavier-table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time Slot</th>
+                    <th>Room / Venue</th>
+                    <th>Building</th>
+                    <th>Reserved By</th>
+                    <th>Department</th>
+                    <th>Purpose / Event</th>
+                    <th style="text-align: right;">Authorization</th>
+                </tr>
+                </thead>
+                <tbody id="scheduleTableBody">
+                <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script src="js/xavier-store.js"></script>
+<script>
+    function toggleDropdown(btn) {
+        const dropdown = btn.closest('.role-switch-dropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.role-switch-dropdown')) {
+            document.querySelectorAll('.role-switch-dropdown').forEach(d => d.classList.remove('active'));
+        }
+    });
+
+    function switchPortal(role) {
+        window.XavierStore.switchRole(role);
+    }
+
+    function handleLogout() {
+        window.XavierStore.logout();
+        window.location.href = 'index.html';
+    }
+
+    function goBackToPortal() {
+        const user = window.XavierStore.getCurrentUser();
+        if (user && user.role === 'ADMIN') {
+            window.location.href = 'admin.html';
+        } else if (user && user.role === 'HOD') {
+            window.location.href = 'hod.html';
+        } else {
+            window.location.href = 'student.html';
+        }
+    }
+
+    function populateFilterRooms() {
+        const select = document.getElementById('filterRoom');
+        const rooms = window.XavierStore.getRooms();
+
+        rooms.forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = r.id;
+            opt.textContent = `${r.name} (${r.building})`;
+            select.appendChild(opt);
+        });
+    }
+
+    function loadSchedule(filterRoomId = null, filterDate = null, filterDept = null) {
+        const bookings = window.XavierStore.getApprovedSchedule({
+            roomId: filterRoomId,
+            date: filterDate,
+            department: filterDept
+        });
+
+        document.getElementById('approvedCountBadge').textContent = `${bookings.length} APPROVED`;
+
+        const tbody = document.getElementById('scheduleTableBody');
+        tbody.innerHTML = '';
+
+        if (bookings.length === 0) {
+            document.getElementById('emptySchedule').style.display = 'block';
+            document.getElementById('scheduleTable').style.display = 'none';
+        } else {
+            document.getElementById('emptySchedule').style.display = 'none';
+            document.getElementById('scheduleTable').style.display = 'table';
+
+            bookings.forEach(b => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: 700;">${b.date}</td>
+                    <td style="font-size: 0.84rem;">${b.startTime} - ${b.endTime}</td>
+                    <td>
+                        <span style="font-weight: 700; color: var(--xavier-maroon);">${b.room.name}</span>
+                    </td>
+                    <td style="font-size: 0.78rem; color: var(--text-muted);">${b.room.building}</td>
+                    <td style="font-weight: 600;">${b.user.name}</td>
+                    <td>${b.user.department || 'N/A'}</td>
+                    <td style="max-width: 240px; font-size: 0.84rem;">${b.purpose}</td>
+                    <td style="text-align: right;">
+                        <span class="status-pill status-approved">Approved</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    }
+
+    function handleFilterSubmit(e) {
+        e.preventDefault();
+        const roomId = document.getElementById('filterRoom').value || null;
+        const date = document.getElementById('filterDate').value || null;
+        const dept = document.getElementById('filterDept').value || null;
+
+        loadSchedule(roomId, date, dept);
+    }
+
+    function resetFilters() {
+        document.getElementById('filterRoom').value = '';
+        document.getElementById('filterDate').value = '';
+        document.getElementById('filterDept').value = '';
+        loadSchedule();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        populateFilterRooms();
+        loadSchedule();
+    });
+</script>
+
+</body>
+</html>
